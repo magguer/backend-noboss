@@ -48,6 +48,6 @@ module.exports = (app) => {
   app.use("/address", addressRoutes);
   app.use("/admin", adminRoutes);
   app.use("/roleAdmin", roleAdminRoutes);
-  app.use("/users", userRoutes);
+  app.use("/user", userRoutes);
 
 };

@@ -19,10 +19,10 @@ const productSchema = new Schema(
       type: String,
       required: true,
     },
-    subcategory: {
+    subcategories: [{
       type: Schema.Types.ObjectId,
       ref: "Subcategory",
-    },
+    }],
     project: {
       type: Schema.Types.ObjectId,
       ref: "Project",

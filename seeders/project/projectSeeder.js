@@ -1,61 +1,65 @@
 const { faker } = require("@faker-js/faker");
-const Project = require("../models/Project");
+const { Project, Heading, User } = require("../../models/index");
+const bcrypt = require("bcryptjs");
+const defaultProjects = require("../../db/projects");
 
 faker.locale = "es";
-
-let projectsArr = [
-  {
-    name: "Gibson",
-    slug: "gibson",
-    logo: "GIBSON-LOGO-WHITE-1.png",
-    logo2: "GIBSON-LOGO-1.png",
-    products: [],
-  },
-  {
-    name: "Fender",
-    slug: "fender",
-    logo: "FENDER-LOGO-WHITE-1.png",
-    logo2: "FENDER-LOGO-1.png",
-    products: [],
-  },
-  {
-    name: "PRS",
-    slug: "prs",
-    logo: "PRS-LOGO-WHITE-1.png",
-    logo2: "PRS-LOGO-1.png",
-    products: [],
-  },
-  {
-    name: "Universal Audio",
-    slug: "universal-audio",
-    logo: "UA-LOGO-WHITE-1.png",
-    logo2: "UA-LOGO-1.png",
-    products: [],
-  },
-  {
-    name: "Neumann",
-    slug: "neumann",
-    logo: "NEUMANN-LOGO-WHITE-1.png",
-    logo2: "NEUMANN-LOGO-1.png",
-    products: [],
-  }
-];
 
 module.exports = async () => {
   const projects = [];
 
-  for (let itemBrand of projectsArr) {
+  for (let projectData of defaultProjects) {
+
+    const members = []
+    for (let memberData of projectData.members) {
+      const member = await User.findOne({ username: memberData })
+      members.push(member)
+    }
+
+    const heading = await Heading.findOne({ slug: projectData.headings[0] })
+
     const project = new Project({
-      name: project.name,
-      slug: project.slug,
-      logo: project.logo,
-      logo2: project.logo2,
-      products: project.products,
+      name: projectData.name,
+      slug: projectData.slug,
+      password: await bcrypt.hash(projectData.password, 8),
+      members,
+      roles: projectData.roles,
+      headings: heading,
+      roles: projectData.roles,
+      logo_url: projectData.logo_url,
+      banners_url: projectData.banners_url,
+      needs: projectData.needs,
+      ubication: projectData.ubication,
+      projects_fav: projectData.projects_fav,
+      public: projectData.public,
+      provider: projectData.provider,
+      networks: {
+        fb: projectData.networks.fb,
+        ig: projectData.networks.ig,
+        ln: projectData.networks.ln
+      },
+      products: projectData.products,
+      services: projectData.services,
+      users_client: projectData.users_client,
+      projects_client: projectData.projects_client,
+      orders: projectData.orders,
+      bookings: projectData.bookings,
+      invested_money: projectData.invested_money,
+      billing_money: projectData.billing_money,
+      available_money: projectData.available_money,
+      banned: projectData.banned
     });
     projects.push(project);
+
+    for (let member of members) {
+      member.projects.push(project)
+      member.save()
+    }
+
+    heading.projects.push(project._id)
+    heading.save()
   }
 
   await Project.insertMany(projects);
-
-  console.log("[Database] Se corrió el seeder de Projecto.");
+  console.log("[Database] Se corrió el seeder de Projects.");
 };

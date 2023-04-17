@@ -3,27 +3,19 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const slugify = require("slugify");
 
-// Display a listing of the resource.
-async function index(req, res) {
-  const users = await User.find();
-  res.json(users);
-}
-
 
 // Create token
 async function token(req, res) {
   try {
-    const user = await User.findOne({ email: req.body.email }).populate({
-      path: "orders",
-      populate: "status",
-    });
+    const user = await User.findOne({ email: req.body.email });
+
     const matchPassword = await bcrypt.compare(
       req.body.password,
       user.password
     );
 
     if (matchPassword) {
-      const token = jwt.sign({ userId: user.id }, process.env.SESSION_SECRET);
+      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
       res.json({
         user: {
           id: user._id,
@@ -45,6 +37,12 @@ async function token(req, res) {
   }
 }
 
+// Display a listing of the resource.
+async function index(req, res) {
+  const users = await User.find();
+  res.json(users);
+}
+
 // Display the specified resource.
 async function show(req, res) {
   const userId = req.params.id;
@@ -52,7 +50,7 @@ async function show(req, res) {
   res.json(user);
 }
 
-// Show the form for creating a new resource
+// Creating a new resource  from storage.
 async function store(req, res) {
   const bodyData = req.body;
   console.log(bodyData)
@@ -92,7 +90,7 @@ async function store(req, res) {
   }
 }
 
-// Show the form for editing the specified resource.
+// Editing the specified resource  from storage.
 async function update(req, res) {
   const bodyData = req.body;
   const userId = req.params.id;
@@ -117,18 +115,6 @@ async function destroy(req, res) {
   res.json({ message: "The User was deleted", userDeleted: user });
 }
 
-async function search(req, res) {
-  const userName = slugify(req.body.searchValue).toLowerCase();
-  const users = await User.find();
-  const searchUser = users.filter(
-    (user) =>
-      slugify(user.firstname).toLowerCase().includes(userName) === true ||
-      slugify(user.lastname).toLowerCase().includes(userName) === true
-  );
-
-  res.json(searchUser);
-}
-
 module.exports = {
   token,
   index,
@@ -136,5 +122,4 @@ module.exports = {
   store,
   update,
   destroy,
-  search,
 };

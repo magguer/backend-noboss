@@ -1,0 +1,160 @@
+const defaultProjects = [
+    /*     Atic */
+    {
+        name: "Atic",
+        slug: "atic",
+        password: "1234",
+        members: ["magguer", "iviza"],
+        roles: [],
+        headings: ["ropa-accesorios"],
+        logo_url: "logo_atic.png",
+        banners_url: [""],
+        needs: [],
+        ubication: "",
+        projects_fav: [],
+        public: false,
+        provider: false,
+        networks: {
+            fb: "",
+            ig: "http://instagram.com/atic_uy",
+            ln: ""
+        },
+        products: [],
+        services: [],
+        users_client: [],
+        projects_client: [],
+        orders: [],
+        bookings: [],
+        invested_money: 0,
+        billing_money: 0,
+        available_money: 0,
+        banned: false
+    },
+    /*     CuartoExpreso */
+    {
+        name: "CuartoExpreso",
+        slug: "cuartoexpreso",
+        password: "1234",
+        members: ["magguer"],
+        roles: [],
+        headings: ["produccion-musical"],
+        logo_url: "logo_cuartoexpreso.png",
+        banners_url: [""],
+        needs: [],
+        ubication: "",
+        projects_fav: [],
+        public: false,
+        provider: false,
+        networks: {
+            fb: "",
+            ig: "http://instagram.com/cuartoexpreso_",
+            ln: ""
+        },
+        products: [],
+        services: [],
+        users_client: [],
+        projects_client: [],
+        orders: [],
+        bookings: [],
+        invested_money: 0,
+        billing_money: 0,
+        available_money: 0,
+        banned: false
+    },
+    /*     Noboss */
+    {
+        name: "Noboss",
+        slug: "noboss",
+        password: "1234",
+        members: ["magguer"],
+        roles: [],
+        headings: ["desarrollo-web-app"],
+        logo_url: "logo_noboss.png",
+        banners_url: [""],
+        needs: [],
+        ubication: "",
+        projects_fav: [],
+        public: false,
+        provider: false,
+        networks: {
+            fb: "",
+            ig: "http://instagram.com/noboss.app",
+            ln: ""
+        },
+        products: [],
+        services: [],
+        users_client: [],
+        projects_client: [],
+        orders: [],
+        bookings: [],
+        invested_money: 0,
+        billing_money: 0,
+        available_money: 0,
+        banned: false
+    },
+    /*     TeroVentas */
+    {
+        name: "Tero Ventas",
+        slug: "tero_ventas",
+        password: "1234",
+        members: ["magguer", "iviza"],
+        roles: [],
+        headings: ["venta-variedad"],
+        logo_url: "logo_teroventas.png",
+        banners_url: [""],
+        needs: [],
+        ubication: "",
+        projects_fav: [],
+        public: false,
+        provider: false,
+        networks: {
+            fb: "",
+            ig: "http://instagram.com/teroventas.uy",
+            ln: ""
+        },
+        products: [],
+        services: [],
+        users_client: [],
+        projects_client: [],
+        orders: [],
+        bookings: [],
+        invested_money: 0,
+        billing_money: 0,
+        available_money: 0,
+        banned: false
+    },
+    /*     Nohelia Iguines Personal Trainer */
+    {
+        name: "Nohelia Iguines - Personal Triner",
+        slug: "niguines_ptrainer",
+        password: "1234",
+        members: ["noheiguines"],
+        roles: [],
+        headings: ["gym-personal-training"],
+        logo_url: "logo_niguinesptrainer.png",
+        banners_url: [""],
+        needs: [],
+        ubication: "",
+        projects_fav: [],
+        public: false,
+        provider: false,
+        networks: {
+            fb: "",
+            ig: "http://instagram.com/niguines.personaltrainer",
+            ln: ""
+        },
+        products: [],
+        services: [],
+        users_client: [],
+        projects_client: [],
+        orders: [],
+        bookings: [],
+        invested_money: 0,
+        billing_money: 0,
+        available_money: 0,
+        banned: false
+    }
+];
+
+
+module.exports = defaultProjects

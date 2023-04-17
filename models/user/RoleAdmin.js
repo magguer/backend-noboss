@@ -6,6 +6,19 @@ const roleAdminSchema = new Schema(
             type: String,
             required: true,
         },
+        description: {
+            type: String
+        },
+        level: {
+            type: Number,
+            required: true,
+        },
+        admins: [
+            {
+                type: Schema.Types.ObjectId,
+                ref: "Admin",
+            },
+        ]
     },
     { timestamps: true }
 );

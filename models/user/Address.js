@@ -2,9 +2,29 @@ const { Schema, mongoose } = require("../../db");
 
 const addressSchema = new Schema(
     {
-        name: {
+        country: {
             type: String,
-            required: true,
+        },
+        city: {
+            type: String,
+        },
+        zone: {
+            type: String,
+        },
+        zip: {
+            type: Number,
+        },
+        street1: {
+            type: String,
+        },
+        street2: {
+            type: String,
+        },
+        number: {
+            type: Number,
+        },
+        extra: {
+            type: String,
         },
     },
     { timestamps: true }

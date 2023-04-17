@@ -31,14 +31,22 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Inserte una password."],
     },
+    roles: [{
+      type: Schema.Types.ObjectId,
+      ref: "RoleProject",
+    }],
     addresses: [{
       type: Schema.Types.ObjectId,
-      ref: "address",
+      ref: "Address",
     }],
     projects: [{
       type: Schema.Types.ObjectId,
-      ref: "project",
+      ref: "Project",
     }],
+    banned: {
+      type: Boolean,
+      required: true
+    },
     tokens: [
       {
         token: {
@@ -57,13 +65,13 @@ userSchema.methods.toJSON = function () {
   return user;
 };
 
-// Bcrypt - Password
-// userSchema.pre('save', async function (next) {
-//     if (this.isModified("password") || this.isNew) {
-//         this.password = await bcrypt.hash(this.password, 8)
-//         next();
-//     }
-// })
+/* Bcrypt - Password */
+userSchema.pre('save', async function (next) {
+  if (this.isModified("password") || this.isNew) {
+    this.password = await bcrypt.hash(this.password, 8)
+    next();
+  }
+})
 
 const User = mongoose.model("User", userSchema);
 module.exports = User;

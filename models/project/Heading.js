@@ -6,6 +6,23 @@ const headingSchema = new Schema(
             type: String,
             required: true,
         },
+        description: {
+            type: String,
+        },
+        slug: {
+            type: String,
+            required: true,
+        },
+        icon_url: {
+            type: String,
+        },
+        image_url: {
+            type: String,
+        },
+        projects: [{
+            type: Schema.Types.ObjectId,
+            ref: "Project",
+        }],
     },
     { timestamps: true }
 );

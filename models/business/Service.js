@@ -19,10 +19,10 @@ const serviceSchema = new Schema(
             type: String,
             required: true,
         },
-        subcategory: {
+        subcategories: [{
             type: Schema.Types.ObjectId,
             ref: "Subcategory",
-        },
+        }],
         project: {
             type: Schema.Types.ObjectId,
             ref: "Project",
@@ -38,14 +38,18 @@ const serviceSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "Order",
         }],
+        bookings: [{
+            type: Schema.Types.ObjectId,
+            ref: "Booking",
+        }],
+        totalBookings: {
+            type: Number,
+        },
         price: {
             type: Number,
             required: true,
         },
         cost: {
-            type: Number,
-        },
-        stock: {
             type: Number,
         },
         providers: [

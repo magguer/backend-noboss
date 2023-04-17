@@ -30,7 +30,7 @@ const adminSchema = new Schema(
     },
     role: {
       type: Schema.Types.ObjectId,
-      ref: "role",
+      ref: "Role",
     },
     tokens: [
       {

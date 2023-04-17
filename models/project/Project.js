@@ -1,4 +1,5 @@
 const { Schema, mongoose } = require("../../db");
+const bcrypt = require("bcryptjs");
 
 const projectSchema = new Schema(
   {
@@ -17,21 +18,22 @@ const projectSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Heading",
     }],
+    roles: [{
+      type: Schema.Types.ObjectId,
+      ref: "RoleProject",
+    }],
     slug: {
       type: String,
       required: true,
     },
-    logo_url:
-    {
+    logo_url: {
       type: String,
-      required: true,
     },
     banners_url: [{
       type: String,
     }],
     needs: [{
       type: Object,
-      required: true,
     }],
     ubication: {
       type: String
@@ -96,10 +98,30 @@ const projectSchema = new Schema(
     availableMoney: {
       type: Number,
     },
+    banned: {
+      type: Boolean,
+      required: true
+    }
   },
   { timestamps: true }
 );
 
-const Project = mongoose.model("Project", projectSchema);
+// No Password in JWT
+projectSchema.methods.toJSON = function () {
+  const project = this.toObject();
+  project.id = project._id.toString();
+  delete project.password;
+  return project;
+};
 
+// Bcrypt - Password
+projectSchema.pre('save', async function (next) {
+  if (this.isModified("password") || this.isNew) {
+    this.password = await bcrypt.hash(this.password, 8)
+    next();
+  }
+})
+
+
+const Project = mongoose.model("Project", projectSchema);
 module.exports = Project;

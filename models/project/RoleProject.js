@@ -6,6 +6,20 @@ const roleProjectSchema = new Schema(
             type: String,
             required: true,
         },
+        description: {
+            type: String,
+        },
+        level: {
+            type: Number,
+        },
+        project: {
+            type: Schema.Types.ObjectId,
+            ref: "Project",
+        },
+        members: [{
+            type: Schema.Types.ObjectId,
+            ref: "User",
+        }]
     },
     { timestamps: true }
 );
