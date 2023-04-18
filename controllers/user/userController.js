@@ -1,13 +1,12 @@
 const { User } = require("../../models");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const slugify = require("slugify");
 
 
 // Create token
 async function token(req, res) {
   try {
-    const user = await User.findOne({ email: req.body.email });
+    const user = await User.findOne({ username: req.body.username }).populate({ path: "projects", populate: "headings" });
 
     const matchPassword = await bcrypt.compare(
       req.body.password,
@@ -16,16 +15,16 @@ async function token(req, res) {
 
     if (matchPassword) {
       const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
+      console.log(user);
       res.json({
-        user: {
-          id: user._id,
-          firstname: user.firstname,
-          lastname: user.lastname,
-          email: user.email,
-          addresses: user.addresses,
-          orders: user.orders,
-          token: token,
-        },
+        id: user._id,
+        email: user.email,
+        username: user.username,
+        image_url: user.image_url,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        projects: user.projects,
+        token: token,
       });
     } else res.json("No existe este usuario");
   } catch (err) {

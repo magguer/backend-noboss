@@ -30,7 +30,7 @@ module.exports = async () => {
       phone: "092683955",
       firstname,
       lastname,
-      photo_url: faker.image.avatar(),
+      image_url: faker.image.avatar(),
       password: await bcrypt.hash("1234", 8),
       addresses: [address],
       projects: [],
@@ -42,14 +42,14 @@ module.exports = async () => {
   /* Specific Users */
 
   for (let userData of defaultUsers) {
-    const { username, email, phone, firstname, lastname, photo_url, password, projects, banned } = userData
+    const { username, email, phone, firstname, lastname, image_url, password, projects, banned } = userData
     const user = new User({
       username,
       email,
       phone,
       firstname,
       lastname,
-      photo_url,
+      image_url,
       password: await bcrypt.hash(password, 8),
       addresses: [address],
       projects,

@@ -4,9 +4,10 @@ const { Product } = require("../../models");
 
 // Display a listing of users
 async function index(req, res) {
-  const projects = await Project.find();
+  const projects = await Project.find().populate("headings");
   res.json(projects);
 }
+
 
 // Display the specified resource.
 async function show(req, res) {

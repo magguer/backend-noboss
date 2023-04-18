@@ -24,7 +24,7 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Inserte su apellido."],
     },
-    photo_url: {
+    image_url: {
       type: String,
     },
     password: {
