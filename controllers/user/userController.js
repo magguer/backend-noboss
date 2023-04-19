@@ -6,7 +6,13 @@ const jwt = require("jsonwebtoken");
 // Create token
 async function token(req, res) {
   try {
-    const user = await User.findOne({ username: req.body.username }).populate({ path: "projects", populate: "headings" });
+    let user
+    if (req.body.username.includes("@")) {
+      user = await User.findOne({ email: req.body.username }).populate({ path: "projects", populate: "headings" });
+
+    } else {
+      user = await User.findOne({ username: req.body.username }).populate({ path: "projects", populate: "headings" });
+    }
 
     const matchPassword = await bcrypt.compare(
       req.body.password,
