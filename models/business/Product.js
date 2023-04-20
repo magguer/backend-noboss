@@ -6,6 +6,10 @@ const productSchema = new Schema(
       type: String,
       required: true,
     },
+    slug: {
+      type: String,
+      required: true,
+    },
     subname: {
       type: String,
     },
@@ -14,10 +18,6 @@ const productSchema = new Schema(
     },
     details: {
       type: Object,
-    },
-    slug: {
-      type: String,
-      required: true,
     },
     subcategories: [{
       type: Schema.Types.ObjectId,

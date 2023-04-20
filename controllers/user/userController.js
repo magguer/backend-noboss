@@ -8,10 +8,10 @@ async function token(req, res) {
   try {
     let user
     if (req.body.username.includes("@")) {
-      user = await User.findOne({ email: req.body.username }).populate({ path: "projects", populate: ["headings", "roles"] }).populate("roles");
+      user = await User.findOne({ email: req.body.username }).populate({ path: "projects", populate: ["headings", "roles", { path: "members", populate: ["role", "member"] }] }).populate("roles");
 
     } else {
-      user = await User.findOne({ username: req.body.username }).populate({ path: "projects", populate: ["headings", "roles"] }).populate("roles");
+      user = await User.findOne({ username: req.body.username }).populate({ path: "projects", populate: ["headings", "roles", { path: "members", populate: ["role", "member"] }] }).populate("roles");
     }
 
     const matchPassword = await bcrypt.compare(

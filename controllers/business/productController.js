@@ -1,9 +1,10 @@
-const { Product, Category, Brand } = require("../../models");
+const { Product, Project } = require("../../models");
 const formidable = require("formidable")
 
 // Display a listing of the resource.
 async function index(req, res) {
-  const products = await Product.find({ highlight: true }).populate("brand").populate("category")
+  const project = await Project.find({ slug: req.query.slug })
+  const products = await Product.find({ project })
   res.json(products);
 }
 

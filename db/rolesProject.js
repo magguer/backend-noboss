@@ -1,6 +1,7 @@
 const defaultRolesProject = [
     {
         name: "Administrador",
+        slug: "administrador",
         description: "Admininistración del Proyecto.",
         level: 500,
         project: "atic",
@@ -8,6 +9,7 @@ const defaultRolesProject = [
     },
     {
         name: "CEO",
+        slug: "ceo",
         description: "CEO del Proyecto.",
         level: 500,
         project: "atic",
@@ -15,6 +17,7 @@ const defaultRolesProject = [
     },
     {
         name: "Administrador",
+        slug: "administrador",
         description: "Admininistración del Proyecto.",
         level: 500,
         project: "cuartoexpreso",
@@ -22,6 +25,7 @@ const defaultRolesProject = [
     },
     {
         name: "Administrador",
+        slug: "administrador",
         description: "Admininistración del Proyecto.",
         level: 500,
         project: "noboss",
@@ -29,6 +33,7 @@ const defaultRolesProject = [
     },
     {
         name: "Administrador",
+        slug: "administrador",
         description: "Admininistración del Proyecto.",
         level: 500,
         project: "tero_ventas",
@@ -36,6 +41,7 @@ const defaultRolesProject = [
     },
     {
         name: "Administrador",
+        slug: "administrador",
         description: "Admininistración del Proyecto.",
         level: 500,
         project: "niguines_ptrainer",

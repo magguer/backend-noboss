@@ -11,8 +11,14 @@ const projectSchema = new Schema(
       type: String,
     },
     members: [{
-      type: Schema.Types.ObjectId,
-      ref: "User",
+      role: {
+        type: Schema.Types.ObjectId,
+        ref: "RoleProject",
+      },
+      member: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      }
     }],
     headings: [{
       type: Schema.Types.ObjectId,

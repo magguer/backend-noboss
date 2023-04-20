@@ -10,19 +10,13 @@ module.exports = async () => {
 
   for (let projectData of defaultProjects) {
 
-    const members = []
-    for (let memberData of projectData.members) {
-      const member = await User.findOne({ username: memberData })
-      members.push(member)
-    }
-
     const heading = await Heading.findOne({ slug: projectData.headings[0] })
 
     const project = new Project({
       name: projectData.name,
       slug: projectData.slug,
       password: await bcrypt.hash(projectData.password, 8),
-      members,
+      members: [],
       roles: projectData.roles,
       headings: heading,
       roles: projectData.roles,
@@ -50,12 +44,6 @@ module.exports = async () => {
       banned: projectData.banned
     });
     projects.push(project);
-
-    for (let member of members) {
-      member.projects.push(project)
-      member.save()
-    }
-
     heading.projects.push(project._id)
     heading.save()
   }

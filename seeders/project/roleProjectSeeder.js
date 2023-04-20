@@ -6,9 +6,11 @@ faker.locale = "es";
 
 module.exports = async () => {
     const roleProjects = [];
+    /* 
+        console.log(defaultRolesProject); */
 
     for (let rolesProjectData of defaultRolesProject) {
-        const { name, description, level } = rolesProjectData
+        const { name, slug, description, level } = rolesProjectData
         const project = await Project.findOne({ slug: rolesProjectData.project })
         const members = []
 
@@ -20,6 +22,7 @@ module.exports = async () => {
         const roleProject = new RoleProject({
             name,
             description,
+            slug,
             level,
             project,
             members
@@ -27,7 +30,9 @@ module.exports = async () => {
 
         for (let member of members) {
             member.roles.push(roleProject)
+            member.projects.push(project)
             member.save()
+            project.members.push({ role: roleProject, member })
         }
 
         roleProjects.push(roleProject)

@@ -32,7 +32,7 @@ module.exports = (app) => {
   app.use("/client", clientRoutes);
   app.use("/discountGroup", discountGroupRoutes);
   app.use("/nobox", noboxRoutes);
-  app.use("/product", productRoutes);
+  app.use("/products", productRoutes);
   app.use("/services", serviceRoutes);
   app.use("/subcategory", subcategoryRoutes);
 
