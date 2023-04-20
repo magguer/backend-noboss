@@ -4,8 +4,13 @@ const { Product } = require("../../models");
 
 // Display a listing of users
 async function index(req, res) {
-  const projects = await Project.find().populate("headings");
-  res.json(projects);
+  if (req.query.public === "true") {
+    const projects = await Project.find({ public: true }).populate("headings");
+    return res.json(projects);
+  } else {
+    const projects = await Project.find().populate("headings");
+    res.json(projects);
+  }
 }
 
 

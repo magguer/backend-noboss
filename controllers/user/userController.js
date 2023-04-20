@@ -8,10 +8,10 @@ async function token(req, res) {
   try {
     let user
     if (req.body.username.includes("@")) {
-      user = await User.findOne({ email: req.body.username }).populate({ path: "projects", populate: "headings" });
+      user = await User.findOne({ email: req.body.username }).populate({ path: "projects", populate: ["headings", "roles"] }).populate("roles");
 
     } else {
-      user = await User.findOne({ username: req.body.username }).populate({ path: "projects", populate: "headings" });
+      user = await User.findOne({ username: req.body.username }).populate({ path: "projects", populate: ["headings", "roles"] }).populate("roles");
     }
 
     const matchPassword = await bcrypt.compare(
@@ -21,7 +21,6 @@ async function token(req, res) {
 
     if (matchPassword) {
       const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
-      console.log(user);
       res.json({
         id: user._id,
         email: user.email,
@@ -30,6 +29,7 @@ async function token(req, res) {
         firstname: user.firstname,
         lastname: user.lastname,
         projects: user.projects,
+        roles: user.roles,
         token: token,
       });
     } else res.json("No existe este usuario");

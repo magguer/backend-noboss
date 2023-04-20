@@ -4,7 +4,14 @@ const defaultRolesProject = [
         description: "Admininistración del Proyecto.",
         level: 500,
         project: "atic",
-        members: ["magguer", "iviza"]
+        members: ["magguer"]
+    },
+    {
+        name: "CEO",
+        description: "CEO del Proyecto.",
+        level: 500,
+        project: "atic",
+        members: ["iviza"]
     },
     {
         name: "Administrador",

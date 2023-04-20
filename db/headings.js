@@ -59,7 +59,7 @@ const defaultHeadings = [
     {
         name: "Producción Musical",
         slug: "produccion-musical",
-        icon: "produccion-musical-icono-white.png",
+        icon_url: "produccion-musical-icono-white.png",
         projects: []
     },
     /*     Productos Naturales */

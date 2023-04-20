@@ -12,7 +12,7 @@ const defaultProjects = [
         needs: [],
         ubication: "",
         projects_fav: [],
-        public: false,
+        public: true,
         provider: false,
         networks: {
             fb: "",
@@ -43,7 +43,7 @@ const defaultProjects = [
         needs: [],
         ubication: "",
         projects_fav: [],
-        public: false,
+        public: true,
         provider: false,
         networks: {
             fb: "",
@@ -74,7 +74,7 @@ const defaultProjects = [
         needs: [],
         ubication: "",
         projects_fav: [],
-        public: false,
+        public: true,
         provider: false,
         networks: {
             fb: "",
@@ -105,7 +105,7 @@ const defaultProjects = [
         needs: [],
         ubication: "",
         projects_fav: [],
-        public: false,
+        public: true,
         provider: false,
         networks: {
             fb: "",
@@ -136,7 +136,7 @@ const defaultProjects = [
         needs: [],
         ubication: "",
         projects_fav: [],
-        public: false,
+        public: true,
         provider: false,
         networks: {
             fb: "",

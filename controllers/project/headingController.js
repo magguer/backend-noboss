@@ -1,7 +1,10 @@
 const { Heading } = require("../../models");
 
 // Display a listing of the resource.
-async function index(req, res) { }
+async function index(req, res) {
+    const headings = await Heading.find();
+    res.json(headings);
+}
 
 // Display the specified resource.
 async function show(req, res) { }
