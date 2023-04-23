@@ -1,5 +1,16 @@
 const { Product, Project } = require("../../models");
+const { createClient } = require("@supabase/supabase-js");
 const formidable = require("formidable");
+const fs = require("fs");
+const path = require("path");
+const slugify = require("slugify");
+
+
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_KEY
+);
+
 
 // Display a listing of the resource.
 async function index(req, res) {
@@ -9,10 +20,10 @@ async function index(req, res) {
     const products = await Product.find({
       project,
       slug: { $regex: regex },
-    }).lean();
+    }).lean().populate("subcategories");
     return res.json(products);
   } else {
-    const products = await Product.find({ project }).lean();
+    const products = await Product.find({ project }).lean().populate("subcategories");
     res.json(products);
   }
 }
@@ -21,8 +32,6 @@ async function index(req, res) {
 async function show(req, res) {
   const productSlug = req.params.slug;
   const product = await Product.findOne({ slug: productSlug })
-    .populate("brand")
-    .populate("category");
   res.json(product);
 }
 
@@ -62,25 +71,56 @@ async function store(req, res) {
 // Patch Product
 async function update(req, res) {
   const form = formidable({
-    uploadDir: __dirname + "/../public/img",
     keepExtensions: true,
     multiples: true,
   });
   form.parse(req, async (err, fields, files) => {
-    const brand = await Brand.findOne({ name: fields.brand });
+    if (err) {
+      console.log("Error parsing the files");
+      return res.status(400).json({
+        status: "Fail",
+        message: "There was an error parsing the files",
+        error: err,
+      });
+    }
     const product = await Product.findById(fields.product);
-    await Brand.findOneAndUpdate(
-      { name: fields.oldBrand },
-      { $pull: { products: product._id } }
-    );
-    if (files.image) {
+    if (files.images) {
+      let arrImages = [];
+      if (typeof files.images === "object") {
+        const ext = path.extname(files.images.filepath);
+        const newFileName = `image_${Date.now()}${ext}`;
+        const { data, error } = await supabase.storage
+          .from("images")
+          .upload(newFileName, fs.createReadStream(files.images.filepath), {
+            cacheControl: "3600",
+            upsert: false,
+            contentType: files.images.mimetype,
+            duplex: "half",
+          });
+        arrImages.push(newFileName);
+      } else {
+        for (let image of files.images) {
+          const ext = path.extname(image.filepath);
+          const newFileName = `image_${Date.now()}${ext}`;
+          const { data, error } = await supabase.storage
+            .from("images")
+            .upload(newFileName, fs.createReadStream(image.filepath), {
+              cacheControl: "3600",
+              upsert: false,
+              contentType: image.mimetype,
+              duplex: "half",
+            });
+          arrImages.push(newFileName);
+        }
+      }
+      const filesProduct = await Product.findById(fields.product);
       const product = await Product.findByIdAndUpdate(
         fields.product,
         {
           brand: brand._id,
           model: fields.model,
           slug: fields.slug,
-          image: files.image,
+          image: [...filesProduct.image, ...arrImages],
           highlight: fields.highlight,
           price: fields.price,
           stock: fields.stock,
@@ -88,9 +128,11 @@ async function update(req, res) {
           description: fields.description,
         },
         { returnOriginal: false }
-      );
+      ).populate("brand");
+
       brand.products.push(product);
       await brand.save();
+      return res.json(product);
     } else {
       const product = await Product.findByIdAndUpdate(
         fields.product,
@@ -105,26 +147,12 @@ async function update(req, res) {
           description: fields.description,
         },
         { returnOriginal: false }
-      );
+      ).populate("brand");
       brand.products.push(product);
       await brand.save();
+      return res.json(product);
     }
-    res.json("Todo Ok");
   });
-}
-
-async function updateStock(req, res) {
-  const productSlug = req.params.slug;
-  const product = await Product.findOne({ slug: productSlug });
-  const newStock = product.stock - req.body.stock;
-  const newProduct = await Product.findOneAndUpdate(
-    { where: { slug: productSlug } },
-    {
-      stock: newStock,
-    },
-    { returnOriginal: false }
-  );
-  res.json(newProduct);
 }
 
 // Remove the specified resource from storage.
@@ -134,46 +162,12 @@ async function destroy(req, res) {
   res.json({ message: "The Product was deleted", productDeleted: product });
 }
 
-async function searchProduct(req, res) {
-  function slug(model) {
-    const slug = model.split(" ").join("-").toLowerCase();
-    return slug;
-  }
-  const slugProduct = slug(req.body.searchValue);
-  const products = await Product.find().populate("brand");
-  const searchProducts = products.filter(
-    (product) => product.slug.includes(slugProduct) === true
-  );
 
-  res.json(searchProducts);
-}
-
-async function filterProduct(req, res) {
-  const products = await Product.find().populate("brand").populate("category");
-  if (req.body.brand) {
-    const productsByBrand = products.filter(
-      (product) => product.brand.name === req.body.brand
-    );
-    return res.json(productsByBrand);
-  }
-
-  if (req.body.category) {
-    const productsByCategory = products.filter(
-      (product) => product.category.name === req.body.category
-    );
-    return res.json(productsByCategory);
-  }
-
-  res.json(products);
-}
 
 module.exports = {
   index,
   show,
   store,
-  updateStock,
   update,
   destroy,
-  searchProduct,
-  filterProduct,
 };

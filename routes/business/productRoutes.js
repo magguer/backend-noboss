@@ -4,9 +4,9 @@ const { expressjwt: checkJwt } = require("express-jwt");
 const productController = require("../../controllers/business/productController");
 
 router.get("/", productController.index);
-router.get("/:slug/", productController.show);
+router.get("/:slug", productController.show);
 router.post("/", productController.store);
-router.patch("/:id/edit", productController.update);
+router.patch("/:id", productController.update);
 router.delete("/:id", productController.destroy);
 
 router.use(
