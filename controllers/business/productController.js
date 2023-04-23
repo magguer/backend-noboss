@@ -1,11 +1,20 @@
 const { Product, Project } = require("../../models");
-const formidable = require("formidable")
+const formidable = require("formidable");
 
 // Display a listing of the resource.
 async function index(req, res) {
-  const project = await Project.find({ slug: req.query.slug })
-  const products = await Product.find({ project })
-  res.json(products);
+  const project = await Project.find({ slug: req.query.project });
+  if (req.query.search) {
+    const regex = new RegExp(req.query.search, "i");
+    const products = await Product.find({
+      project,
+      slug: { $regex: regex },
+    }).lean();
+    return res.json(products);
+  } else {
+    const products = await Product.find({ project }).lean();
+    res.json(products);
+  }
 }
 
 // Display the specified resource.
