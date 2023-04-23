@@ -67,6 +67,14 @@ const projectSchema = new Schema(
         type: String,
       },
     },
+    categories: [{
+      type: Schema.Types.ObjectId,
+      ref: "Category",
+    }],
+    sub_categories: [{
+      type: Schema.Types.ObjectId,
+      ref: "Subcategory",
+    }],
     products: [{
       type: Schema.Types.ObjectId,
       ref: "Product",
@@ -74,6 +82,10 @@ const projectSchema = new Schema(
     services: [{
       type: Schema.Types.ObjectId,
       ref: "Service",
+    }],
+    clients: [{
+      type: Schema.Types.ObjectId,
+      ref: "Client",
     }],
     users_client: [{
       type: Schema.Types.ObjectId,

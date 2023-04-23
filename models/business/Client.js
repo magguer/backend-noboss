@@ -6,13 +6,18 @@ const clientSchema = new Schema(
             type: String,
             required: true,
         },
+        email: {
+            type: String
+        },
+        phone: {
+            type: String
+        },
         type: {
             type: String,
         },
         project: {
             type: Schema.Types.ObjectId,
             ref: "Project",
-            required: true,
         },
         orders: [{
             type: Schema.Types.ObjectId,
@@ -22,12 +27,9 @@ const clientSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "Booking",
         }],
-        bookings: {
+        adress: {
             type: Schema.Types.ObjectId,
             ref: "Adress",
-        },
-        phone: {
-            type: String
         }
     },
     { timestamps: true }

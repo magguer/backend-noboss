@@ -8,11 +8,12 @@ module.exports = async () => {
     const headings = []
 
     for (let headingData of defaultHeadings) {
+        const { name, slug, icon_url, projects } = headingData
         const heading = new Heading({
-            name: headingData.name,
-            slug: headingData.slug,
-            icon_url: headingData.icon_url,
-            projects: headingData.projects
+            name,
+            slug,
+            icon_url,
+            projects
         });
         headings.push(heading);
     }

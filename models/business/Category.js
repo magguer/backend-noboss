@@ -22,18 +22,6 @@ const categorySchema = new Schema(
         ref: "Subcategory",
       }
     ],
-    products: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Product",
-      },
-    ],
-    services: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Service",
-      },
-    ],
   },
   { timestamps: true }
 );

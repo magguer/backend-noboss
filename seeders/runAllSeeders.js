@@ -14,19 +14,21 @@ async function runAllSeeders() {
   await require("./project/roleProjectSeeder")();
 
 
-  await require("./business/productSeeder")();
-  /*await require("./business/categorySeeder")();
-  await require("./business/clientSeeder")();
-  await require("./business/discountGroupSeeder")();
-  await require("./business/noboxSeeder")();
-  await require("./business/serviceSeeder")();
+
+  await require("./business/categorySeeder")();
   await require("./business/subcategorySeeder")();
+  await require("./business/productSeeder")();
+  /*await require("./business/clientSeeder")();
+ await require("./business/discountGroupSeeder")();
+ await require("./business/noboxSeeder")();
+ await require("./business/serviceSeeder")();
+
  
  
-  await require("./payment/billSeeder")();
-  await require("./payment/bookingSeeder")();
-  await require("./payment/orderSeeder")();
-  await require("./payment/statusSeeder")(); */
+ await require("./payment/billSeeder")();
+ await require("./payment/bookingSeeder")();
+ await require("./payment/orderSeeder")();
+ await require("./payment/statusSeeder")(); */
 
 
 

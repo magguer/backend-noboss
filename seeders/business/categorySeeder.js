@@ -1,27 +1,29 @@
 const { faker } = require("@faker-js/faker");
-const { Category } = require("../../models");
-const { User } = require("../../models");
-const slugify = require("slugify");
+const { Category, Project } = require("../../models");
+const defaultCategories = require("../../db/categories")
 
 faker.locale = "es";
 
-let ArrayCategories = [{ name: "Electric", slug: 'electric' }, { name: "Acoustic", slug: 'acoustic' }, { name: "Bass", slug: 'bass' }, { name: "AudioPro", slug: 'audiopro' }];
-
-const numbers = [1, 2, 3, 4];
-
 module.exports = async () => {
   const categories = [];
-  for (let i = 0; i < ArrayCategories.length; i++) {
+
+  for (let categoryData of defaultCategories) {
+    const { name, slug, img_url, subcategories } = categoryData
+    const project = await Project.findOne({ slug: categoryData.project })
     const category = new Category({
-      name: ArrayCategories[i].name,
-      number: numbers[i],
-      products: [],
-      slug: ArrayCategories[i].slug
-    });
-    categories.push(category);
+      name,
+      slug,
+      img_url,
+      project,
+      subcategories
+    })
+    categories.push(category)
+
+    project.categories.push(category)
+    await project.save()
+
   }
 
   await Category.insertMany(categories);
-
   console.log("[Database] Se corrió el seeder de Categories.");
 };

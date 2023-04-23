@@ -1,16 +1,36 @@
 const { faker } = require("@faker-js/faker");
-const { Subcategory } = require("../../models");
+const { Subcategory, Project, Category } = require("../../models");
+const defaultSubcategories = require("../../db/subcategories");
 
 faker.locale = "es";
 
 module.exports = async () => {
-    const subcategories = [];
+    const sub_categories = [];
 
-    for (let i = 0; i <= Number(process.env.TOTAL_SUBCATEGORY); i++) {
+    for (let subcategoryData of defaultSubcategories) {
+        const { name, slug, image_url, products, services } = subcategoryData
+
+        const project = await Project.findOne({ slug: subcategoryData.project })
+        const category = await Category.findOne({ slug: subcategoryData.category })
         const subcategory = new Subcategory({
+            name,
+            slug,
+            image_url,
+            project,
+            category,
+            products,
+            services
         });
-        subcategories.push(subcategory);
+        sub_categories.push(subcategory);
+
+        project.sub_categories.push(subcategory)
+        category.sub_categories.push(subcategory)
+
+        await project.save()
+        await category.save()
+
+
     }
-    await Subcategory.insertMany(subcategories);
+    await Subcategory.insertMany(sub_categories);
     console.log("[Database] Se corrió el seeder de Subcategory.");
 };
