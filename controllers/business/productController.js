@@ -1,4 +1,4 @@
-const { Product, Project } = require("../../models");
+const { Product, Project, Category, Subcategory } = require("../../models");
 const { createClient } = require("@supabase/supabase-js");
 const formidable = require("formidable");
 const fs = require("fs");
@@ -20,10 +20,10 @@ async function index(req, res) {
     const products = await Product.find({
       project,
       slug: { $regex: regex },
-    }).lean().populate("subcategories");
+    }).populate("sub_category").lean();
     return res.json(products);
   } else {
-    const products = await Product.find({ project }).lean().populate("subcategories");
+    const products = await Product.find({ project }).populate("sub_category").lean();
     res.json(products);
   }
 }
@@ -31,7 +31,7 @@ async function index(req, res) {
 // Display the specified resource.
 async function show(req, res) {
   const productSlug = req.params.slug;
-  const product = await Product.findOne({ slug: productSlug })
+  const product = await Product.findOne({ slug: productSlug }).populate("sub_category").populate("category")
   res.json(product);
 }
 
@@ -83,14 +83,19 @@ async function update(req, res) {
         error: err,
       });
     }
+    const sub_category = await Subcategory.findOne({ slug: fields.sub_category });
     const product = await Product.findById(fields.product);
+    await Subcategory.findOneAndUpdate(
+      { slug: fields.oldSub_category },
+      { $pull: { products: product._id } }
+    )
     if (files.images) {
       let arrImages = [];
       if (typeof files.images === "object") {
         const ext = path.extname(files.images.filepath);
         const newFileName = `image_${Date.now()}${ext}`;
         const { data, error } = await supabase.storage
-          .from("images")
+          .from("imgs/projects/products")
           .upload(newFileName, fs.createReadStream(files.images.filepath), {
             cacheControl: "3600",
             upsert: false,
@@ -103,7 +108,7 @@ async function update(req, res) {
           const ext = path.extname(image.filepath);
           const newFileName = `image_${Date.now()}${ext}`;
           const { data, error } = await supabase.storage
-            .from("images")
+            .from("imgs/projects/products")
             .upload(newFileName, fs.createReadStream(image.filepath), {
               cacheControl: "3600",
               upsert: false,
@@ -117,39 +122,39 @@ async function update(req, res) {
       const product = await Product.findByIdAndUpdate(
         fields.product,
         {
-          brand: brand._id,
           model: fields.model,
-          slug: fields.slug,
-          image: [...filesProduct.image, ...arrImages],
-          highlight: fields.highlight,
+          sku: fields.slug,
+          description: fields.description,
           price: fields.price,
           stock: fields.stock,
+          cost: fields.cost,
           subtitle: fields.subtitle,
           description: fields.description,
+          images_url: [...filesProduct.images_url, ...arrImages],
         },
         { returnOriginal: false }
-      ).populate("brand");
+      ).populate("sub_category").populate("category");
 
-      brand.products.push(product);
-      await brand.save();
+      sub_category.products.push(product);
+      await sub_category.save();
       return res.json(product);
     } else {
       const product = await Product.findByIdAndUpdate(
         fields.product,
         {
-          brand: brand._id,
           model: fields.model,
-          slug: fields.slug,
-          highlight: fields.highlight,
+          sku: fields.slug,
+          description: fields.description,
           price: fields.price,
           stock: fields.stock,
+          cost: fields.cost,
           subtitle: fields.subtitle,
           description: fields.description,
         },
         { returnOriginal: false }
-      ).populate("brand");
-      brand.products.push(product);
-      await brand.save();
+      ).populate("sub_category").populate("category");
+      sub_category.products.push(product);
+      await sub_category.save();
       return res.json(product);
     }
   });

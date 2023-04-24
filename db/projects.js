@@ -19,6 +19,8 @@ const defaultProjects = [
             ig: "http://instagram.com/atic_uy",
             ln: ""
         },
+        cateories: [],
+        sub_cateories: [],
         products: [],
         services: [],
         users_client: [],
@@ -50,6 +52,8 @@ const defaultProjects = [
             ig: "http://instagram.com/cuartoexpreso_",
             ln: ""
         },
+        cateories: [],
+        sub_cateories: [],
         products: [],
         services: [],
         users_client: [],
@@ -112,6 +116,8 @@ const defaultProjects = [
             ig: "http://instagram.com/teroventas.uy",
             ln: ""
         },
+        cateories: [],
+        sub_cateories: [],
         products: [],
         services: [],
         users_client: [],

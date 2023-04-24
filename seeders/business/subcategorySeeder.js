@@ -7,11 +7,12 @@ faker.locale = "es";
 module.exports = async () => {
     const sub_categories = [];
 
-    for (let subcategoryData of defaultSubcategories) {
-        const { name, slug, image_url, products, services } = subcategoryData
+    for (let sub_categoryData of defaultSubcategories) {
+        const { name, slug, image_url, products, services } = sub_categoryData
 
-        const project = await Project.findOne({ slug: subcategoryData.project })
-        const category = await Category.findOne({ slug: subcategoryData.category })
+        const project = await Project.findOne({ slug: sub_categoryData.project })
+        const category = await Category.findOne({ slug: sub_categoryData.category })
+
         const subcategory = new Subcategory({
             name,
             slug,

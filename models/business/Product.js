@@ -2,11 +2,15 @@ const { Schema, mongoose } = require("../../db");
 
 const productSchema = new Schema(
   {
-    name: {
+    model: {
       type: String,
       required: true,
     },
     slug: {
+      type: String,
+      required: true,
+    },
+    sku: {
       type: String,
       required: true,
     },
@@ -19,10 +23,14 @@ const productSchema = new Schema(
     details: {
       type: Object,
     },
-    subcategories: [{
+    category: {
+      type: Schema.Types.ObjectId,
+      ref: "Category",
+    },
+    sub_category: {
       type: Schema.Types.ObjectId,
       ref: "Subcategory",
-    }],
+    },
     project: {
       type: Schema.Types.ObjectId,
       ref: "Project",

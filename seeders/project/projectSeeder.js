@@ -1,5 +1,5 @@
 const { faker } = require("@faker-js/faker");
-const { Project, Heading, User } = require("../../models/index");
+const { Project, Heading } = require("../../models/index");
 const bcrypt = require("bcryptjs");
 const defaultProjects = require("../../db/projects");
 

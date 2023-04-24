@@ -19,10 +19,10 @@ const serviceSchema = new Schema(
             type: String,
             required: true,
         },
-        subcategories: [{
+        sub_category: {
             type: Schema.Types.ObjectId,
             ref: "Subcategory",
-        }],
+        },
         project: {
             type: Schema.Types.ObjectId,
             ref: "Project",

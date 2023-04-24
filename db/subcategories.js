@@ -9,8 +9,8 @@ const defaultSubcategories = [
         services: [],
     },
     {
-        name: "Remeras",
-        slug: "remeras",
+        name: "Camisetas",
+        slug: "camisetas",
         img_url: "",
         project: "atic",
         category: "indumentaria",

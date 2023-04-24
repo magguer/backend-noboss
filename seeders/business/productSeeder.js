@@ -1,5 +1,4 @@
-const { faker } = require("@faker-js/faker");
-const { Product, Project, Subcategory, } = require("../../models");
+const { Product, Project, Subcategory, Category } = require("../../models");
 const defaultProducts = require("../../db/products");
 
 module.exports = async () => {
@@ -7,26 +6,22 @@ module.exports = async () => {
 
   for (let productData of defaultProducts) {
 
-    const { name, slug, subname, description, details, images_url, orders, price, cost, stock, providers } = productData
+    const { model, slug, sku, subname, description, details, images_url, orders, price, cost, stock, providers } = productData
 
     const project = await Project.findOne({ slug: productData.project })
-    const subcategories = []
+    const category = await Category.findOne({ slug: productData.category })
+    const sub_category = await Subcategory.findOne({ slug: productData.sub_category })
 
-    for (let subcategoryData of productData.subcategories) {
-      const subcategory = await Subcategory.findOne({ slug: subcategoryData })
-      subcategories.push(subcategory)
-    }
+
 
     const product = new Product({
-      name, slug, subname, description, details, subcategories, project, images_url, orders, price, cost, stock, providers
+      model, slug, sku, subname, description, details, category, sub_category, project, images_url, orders, price, cost, stock, providers
 
     });
     products.push(product);
 
-    for (let subcategory of subcategories) {
-      subcategory.products.push(product)
-      await subcategory.save()
-    }
+    sub_category.products.push(product)
+    await sub_category.save()
 
   }
 

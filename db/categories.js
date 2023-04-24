@@ -4,14 +4,14 @@ const defaultCategories = [
         slug: "indumentaria",
         image_url: "",
         project: "atic",
-        sub_categories: ["gorros", "remeras", "buzos"],
+        sub_categories: [],
     },
     {
         name: "Accesorios",
         slug: "accesorios",
         image_url: "",
         project: "tero_ventas",
-        sub_categories: ["billeteras"],
+        sub_categories: [],
     }
 
 ]

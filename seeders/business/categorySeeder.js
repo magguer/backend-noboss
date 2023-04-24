@@ -8,14 +8,14 @@ module.exports = async () => {
   const categories = [];
 
   for (let categoryData of defaultCategories) {
-    const { name, slug, img_url, subcategories } = categoryData
+    const { name, slug, img_url, sub_categories } = categoryData
     const project = await Project.findOne({ slug: categoryData.project })
     const category = new Category({
       name,
       slug,
       img_url,
       project,
-      subcategories
+      sub_categories
     })
     categories.push(category)
 
