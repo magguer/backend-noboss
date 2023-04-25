@@ -91,19 +91,7 @@ async function update(req, res) {
     )
     if (files.images) {
       let arrImages = [];
-      if (typeof files.images === "object") {
-        const ext = path.extname(files.images.filepath);
-        const newFileName = `image_${Date.now()}${ext}`;
-        const { data, error } = await supabase.storage
-          .from("imgs/projects/products")
-          .upload(newFileName, fs.createReadStream(files.images.filepath), {
-            cacheControl: "3600",
-            upsert: false,
-            contentType: files.images.mimetype,
-            duplex: "half",
-          });
-        arrImages.push(newFileName);
-      } else {
+      if (files.images.length > 0) {
         for (let image of files.images) {
           const ext = path.extname(image.filepath);
           const newFileName = `image_${Date.now()}${ext}`;
@@ -117,6 +105,18 @@ async function update(req, res) {
             });
           arrImages.push(newFileName);
         }
+      } else {
+        const ext = path.extname(files.images.filepath);
+        const newFileName = `image_${Date.now()}${ext}`;
+        const { data, error } = await supabase.storage
+          .from("imgs/projects/products")
+          .upload(newFileName, fs.createReadStream(files.images.filepath), {
+            cacheControl: "3600",
+            upsert: false,
+            contentType: files.images.mimetype,
+            duplex: "half",
+          });
+        arrImages.push(newFileName);
       }
       const filesProduct = await Product.findById(fields.product);
       const product = await Product.findByIdAndUpdate(
