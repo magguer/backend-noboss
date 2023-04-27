@@ -256,7 +256,7 @@ const defaultProducts = [
   },
   {
     model: "Billetera Automática M.1 Black",
-    slug: "billetera-automatica-negra-1.png",
+    slug: "billetera-automatica-negra-1",
     sku: "BAUTOBLACK1",
     submodel: "",
     description: "",
@@ -273,7 +273,7 @@ const defaultProducts = [
   },
   {
     model: "Billetera Automática M.1 Grey",
-    slug: "billetera-automatica-gris-1.png",
+    slug: "billetera-automatica-gris-1",
     sku: "BAUTOGREY1",
     submodel: "",
     description: "",
@@ -290,7 +290,7 @@ const defaultProducts = [
   },
   {
     model: "Billetera Automática M.1 Brown",
-    slug: "billetera-automatica-brown-1.png",
+    slug: "billetera-automatica-brown-1",
     sku: "BAUTOBROWN1",
     submodel: "",
     description: "",

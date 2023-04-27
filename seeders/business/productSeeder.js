@@ -16,11 +16,11 @@ module.exports = async () => {
 
     const product = new Product({
       model, slug, sku, subname, description, details, category, sub_category, project, images_url, orders, price, cost, stock, providers
-
     });
     products.push(product);
-
+    project.products.push(product)
     sub_category.products.push(product)
+    await project.save()
     await sub_category.save()
 
   }

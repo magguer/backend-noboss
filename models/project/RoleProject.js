@@ -13,7 +13,7 @@ const roleProjectSchema = new Schema(
         description: {
             type: String,
         },
-        level: {
+        matriz: {
             type: Number,
         },
         project: {
