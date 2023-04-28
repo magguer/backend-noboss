@@ -5,12 +5,10 @@ const fs = require("fs");
 const path = require("path");
 const { default: slugify } = require("slugify");
 
-
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_KEY
 );
-
 
 // Display a listing of the resource.
 async function index(req, res) {
@@ -20,10 +18,16 @@ async function index(req, res) {
     const products = await Product.find({
       project,
       slug: { $regex: regex },
-    }).populate("sub_category").populate("category").lean();
+    })
+      .populate("sub_category")
+      .populate("category")
+      .lean();
     return res.json(products);
   } else {
-    const products = await Product.find({ project }).populate("sub_category").populate("category").lean();
+    const products = await Product.find({ project })
+      .populate("sub_category")
+      .populate("category")
+      .lean();
     res.json(products);
   }
 }
@@ -31,94 +35,101 @@ async function index(req, res) {
 // Display the specified resource.
 async function show(req, res) {
   const productSlug = req.params.slug;
-  const product = await Product.findOne({ slug: productSlug }).populate("sub_category").populate("category").populate({ path: "project", populate: "products" })
+  const product = await Product.findOne({ slug: productSlug })
+    .populate("sub_category")
+    .populate("category")
+    .populate({ path: "project", populate: "products" });
   res.json(product);
 }
 
 // Show the form for creating a new resource
 async function store(req, res) {
+  try {
+    const form = formidable({
+      keepExtensions: true,
+      multiples: true,
+    });
 
-  const form = formidable({
-    keepExtensions: true,
-    multiples: true,
-  });
-
-  form.parse(req, async (err, fields, files) => {
-    if (err) {
-      console.log("Error parsing the files");
-      return res.status(400).json({
-        status: "Fail",
-        message: "There was an error parsing the files",
-        error: err,
-      });
-    }
-    if (files) {
-      let arrImages = [];
-      if (files.images.length > 0) {
-        for (let image of files.images) {
-          const ext = path.extname(image.filepath);
+    form.parse(req, async (err, fields, files) => {
+      if (err) {
+        console.log("Error parsing the files");
+        return res.status(400).json({
+          status: "Fail",
+          message: "There was an error parsing the files",
+          error: err,
+        });
+      }
+      if (files) {
+        let arrImages = [];
+        if (files.images.length > 0) {
+          for (let image of files.images) {
+            const ext = path.extname(image.filepath);
+            const newFileName = `image_${Date.now()}${ext}`;
+            const { data, error } = await supabase.storage
+              .from("imgs/projects/products")
+              .upload(newFileName, fs.createReadStream(image.filepath), {
+                cacheControl: "3600",
+                upsert: false,
+                contentType: image.mimetype,
+                duplex: "half",
+              });
+            arrImages.push(newFileName);
+          }
+        } else {
+          const ext = path.extname(files.images.filepath);
           const newFileName = `image_${Date.now()}${ext}`;
           const { data, error } = await supabase.storage
             .from("imgs/projects/products")
-            .upload(newFileName, fs.createReadStream(image.filepath), {
+            .upload(newFileName, fs.createReadStream(files.images.filepath), {
               cacheControl: "3600",
               upsert: false,
-              contentType: image.mimetype,
+              contentType: files.images.mimetype,
               duplex: "half",
             });
           arrImages.push(newFileName);
         }
-      } else {
-        const ext = path.extname(files.images.filepath);
-        const newFileName = `image_${Date.now()}${ext}`;
-        const { data, error } = await supabase.storage
-          .from("imgs/projects/products")
-          .upload(newFileName, fs.createReadStream(files.images.filepath), {
-            cacheControl: "3600",
-            upsert: false,
-            contentType: files.images.mimetype,
-            duplex: "half",
-          });
-        arrImages.push(newFileName);
+
+        const category = await Category.findOne({
+          slug: fields.category,
+        });
+
+        const sub_category = await Subcategory.findOne({
+          slug: fields.sub_category,
+        });
+
+        const project = await Project.findOne({ slug: fields.project });
+
+        const product = new Product({
+          model: fields.model,
+          slug: slugify(fields.model).toLowerCase(),
+          sku: fields.sku,
+          description: fields.description,
+          images_url: arrImages,
+          details: fields.details,
+          category: category._id,
+          sub_category: sub_category._id,
+          project: project._id,
+          price: fields.price,
+          cost: fields.cost,
+          stock: fields.stock,
+        });
+        await product.save();
+
+        sub_category.products.push(product._id);
+        project.products.push(product._id);
+        await sub_category.save();
+        await project.save();
+
+        const newProduct = await Product.findById(product.id)
+          .populate("sub_category")
+          .populate("category");
+
+        return res.json(newProduct);
       }
-
-      const category = await Category.findOne({
-        slug: fields.category,
-      })
-
-      const sub_category = await Subcategory.findOne({
-        slug: fields.sub_category,
-      })
-
-      const project = await Project.findOne({ slug: fields.project })
-
-      const product = new Product({
-        model: fields.model,
-        slug: slugify(fields.model).toLowerCase(),
-        sku: fields.sku,
-        description: fields.description,
-        images_url: arrImages,
-        details: fields.details,
-        category: category._id,
-        sub_category: sub_category._id,
-        project: project._id,
-        price: fields.price,
-        cost: fields.cost,
-        stock: fields.stock
-      });
-      await product.save();
-
-      sub_category.products.push(product._id);
-      project.products.push(product._id)
-      await sub_category.save();
-      await project.save()
-
-      const newProduct = await Product.findById(product.id)
-        .populate("sub_category").populate("category");
-
-      return res.json(newProduct);
-    }
-  });
+    });
+  } catch {
+    console.log("No se pudo crear el producto.");
+  }
 }
 
 // Patch Product
@@ -136,15 +147,16 @@ async function update(req, res) {
         error: err,
       });
     }
-    const sub_category = await Subcategory.findOne({ slug: fields.sub_category });
+    const sub_category = await Subcategory.findOne({
+      slug: fields.sub_category,
+    });
     const category = await Category.findOne({ slug: fields.category });
     const product = await Product.findById(fields.product);
 
     await Subcategory.findOneAndUpdate(
       { slug: fields.oldSub_category },
       { $pull: { products: product._id } }
-    )
-
+    );
 
     if (files.images) {
       let arrImages = [];
@@ -193,7 +205,9 @@ async function update(req, res) {
           description: fields.description,
         },
         { returnOriginal: false }
-      ).populate("sub_category").populate("category");
+      )
+        .populate("sub_category")
+        .populate("category");
 
       sub_category.products.push(product);
       await sub_category.save();
@@ -215,7 +229,9 @@ async function update(req, res) {
           description: fields.description,
         },
         { returnOriginal: false }
-      ).populate("sub_category").populate("category");
+      )
+        .populate("sub_category")
+        .populate("category");
       sub_category.products.push(product);
       await sub_category.save();
       return res.json(product);
@@ -229,8 +245,6 @@ async function destroy(req, res) {
   const product = await Product.findOneAndDelete({ id: productId });
   res.json({ message: "The Product was deleted", productDeleted: product });
 }
-
-
 
 module.exports = {
   index,
