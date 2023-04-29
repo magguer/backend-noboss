@@ -32,6 +32,8 @@ module.exports = async () => {
         ig: projectData.networks.ig,
         ln: projectData.networks.ln
       },
+      products_on: projectData.products_on,
+      services_on: projectData.services_on,
       products: projectData.products,
       services: projectData.services,
       users_client: projectData.users_client,

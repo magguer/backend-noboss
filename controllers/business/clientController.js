@@ -1,7 +1,20 @@
-const { Client } = require("../../models");
+const { Client, Project } = require("../../models");
 
 // Display a listing of the resource.
-async function index(req, res) { }
+async function index(req, res) {
+    const project = await Project.find({ slug: req.query.project });
+    if (req.query.search) {
+        const regex = new RegExp(req.query.search, "i");
+        const clients = await Client.find({
+            project,
+            slug: { $regex: regex },
+        }).lean();
+        return res.json(clients);
+    } else {
+        const clients = await Client.find({ project }).lean();
+        res.json(clients);
+    }
+}
 
 // Display the specified resource.
 async function show(req, res) { }

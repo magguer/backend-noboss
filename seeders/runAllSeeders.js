@@ -18,8 +18,8 @@ async function runAllSeeders() {
   await require("./business/categorySeeder")();
   await require("./business/subcategorySeeder")();
   await require("./business/productSeeder")();
-  /*await require("./business/clientSeeder")();
- await require("./business/discountGroupSeeder")();
+  await require("./business/clientSeeder")();
+  /*await require("./business/discountGroupSeeder")();
  await require("./business/noboxSeeder")();
  await require("./business/serviceSeeder")();
 

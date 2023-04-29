@@ -75,6 +75,8 @@ const projectSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Subcategory",
     }],
+    products_on: { type: Boolean },
+    services_on: { type: Boolean },
     products: [{
       type: Schema.Types.ObjectId,
       ref: "Product",

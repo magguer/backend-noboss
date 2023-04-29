@@ -1,14 +1,30 @@
 const { faker } = require("@faker-js/faker");
-const { Client } = require("../../models");
+const { Client, Project } = require("../../models");
+const defaultClients = require("../../db/clients")
+
+
 
 faker.locale = "es";
 
 module.exports = async () => {
     const clients = [];
 
-    for (let i = 0; i <= Number(process.env.TOTAL_CLIENTS); i++) {
+    for (let clientData of defaultClients) {
+        const project = await Project.findOne({ slug: clientData.project })
+
+        const { name, type, email, phone, orders, bookings } = clientData
         const client = new Client({
+            name,
+            type,
+            email,
+            phone,
+            project,
+            orders,
+            bookings,
         });
+
+        project.clients.push(client)
+        await project.save()
         clients.push(client);
     }
     await Client.insertMany(clients);
