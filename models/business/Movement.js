@@ -9,7 +9,7 @@ const movementSchema = new Schema(
         reason: {
             type: String,
         },
-        project: {
+        user: {
             type: Schema.Types.ObjectId,
             ref: "User",
         },

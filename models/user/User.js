@@ -43,6 +43,10 @@ const userSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Project",
     }],
+    movements: [{
+      type: Schema.Types.ObjectId,
+      ref: "Movenet",
+    }],
     banned: {
       type: Boolean,
       required: true

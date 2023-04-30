@@ -4,6 +4,7 @@ const Category = require("./business/Category");
 const Subcategory = require("./business/Subcategory")
 const Product = require("./business/Product");
 const Service = require("./business/Service");
+const Movement = require("./business/Movement");
 const Nobox = require("./business/Nobox");
 const DiscountGroups = require("./business/DiscountGroup");
 const Client = require("./business/Client");
@@ -31,6 +32,7 @@ module.exports = {
   Subcategory,
   Product,
   Service,
+  Movement,
   Nobox,
   DiscountGroups,
   Client,

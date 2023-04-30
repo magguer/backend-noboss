@@ -41,8 +41,8 @@ module.exports = async () => {
       orders: projectData.orders,
       bookings: projectData.bookings,
       invested_money: projectData.invested_money,
-      billing_money: projectData.billing_money,
-      available_money: projectData.available_money,
+      sales_money: projectData.sales_money,
+      spent_money: projectData.spent_money,
       banned: projectData.banned
     });
     projects.push(project);

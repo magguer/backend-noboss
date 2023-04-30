@@ -44,12 +44,11 @@ async function show(req, res) {
 
 // Show the form for creating a new resource
 async function store(req, res) {
+  const form = formidable({
+    keepExtensions: true,
+    multiples: true,
+  });
   try {
-    const form = formidable({
-      keepExtensions: true,
-      multiples: true,
-    });
-
     form.parse(req, async (err, fields, files) => {
       if (err) {
         console.log("Error parsing the files");
@@ -59,7 +58,7 @@ async function store(req, res) {
           error: err,
         });
       }
-      if (files) {
+      if (files.images) {
         let arrImages = [];
         if (files.images.length > 0) {
           for (let image of files.images) {
@@ -127,8 +126,8 @@ async function store(req, res) {
         return res.json(newProduct);
       }
     });
-  } catch {
-    console.log("No se pudo crear el producto.");
+  } catch (error) {
+    res.json(error);
   }
 }
 

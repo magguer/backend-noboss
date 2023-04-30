@@ -13,9 +13,7 @@ const roleProjectSchema = new Schema(
         description: {
             type: String,
         },
-        matriz: {
-            type: Number,
-        },
+        matriz: {},
         project: {
             type: Schema.Types.ObjectId,
             ref: "Project",

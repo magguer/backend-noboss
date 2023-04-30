@@ -20,7 +20,22 @@ async function index(req, res) {
 async function show(req, res) { }
 
 // Store a newly created resource in storage.
-async function store(req, res) { }
+async function store(req, res) {
+    const project = await Project.findOne({ slug: req.body.project });
+    const { name, email, phone, type } = req.body
+    console.log(type);
+    try {
+        const client = new Client({
+            name, email, phone, type, project, orders: []
+        })
+        await client.save()
+        project.clients.push(client)
+        project.save()
+        res.json(client)
+    } catch (error) {
+        res.json(error)
+    }
+}
 
 // Update the specified resource in storage.
 async function update(req, res) { }

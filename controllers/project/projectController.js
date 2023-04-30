@@ -5,10 +5,10 @@ const { Product } = require("../../models");
 // Display a listing of users
 async function index(req, res) {
   if (req.query.public === "true") {
-    const projects = await Project.find({ public: true }).populate("headings");
+    const projects = await Project.find({ public: true }).populate("headings").populate("movements");
     return res.json(projects);
   } else {
-    const projects = await Project.find().populate("headings");
+    const projects = await Project.find().populate("headings").populate("movements");
     res.json(projects);
   }
 }
@@ -17,7 +17,7 @@ async function index(req, res) {
 // Display the specified resource.
 async function show(req, res) {
   const projectSlug = req.params.slug;
-  const project = await Project.findOne({ slug: projectSlug });
+  const project = await Project.findOne({ slug: projectSlug }).populate("movements");
   res.json(project);
 }
 
@@ -38,15 +38,6 @@ async function destroy(req, res) {
   });
 }
 
-async function searchBrand(req, res) {
-  const projectName = slugify(req.body.searchBrand).toLowerCase();
-  const projects = await Project.find();
-  const searchProject = projects.filter(
-    (brand) => slugify(brand.slug).toLowerCase().includes(projectName) === true
-  );
-
-  res.json(searchProject);
-}
 
 module.exports = {
   index,
@@ -54,5 +45,4 @@ module.exports = {
   create,
   update,
   destroy,
-  searchBrand,
 };

@@ -8,10 +8,10 @@ async function token(req, res) {
   try {
     let user
     if (req.body.username.includes("@")) {
-      user = await User.findOne({ email: req.body.username }).populate({ path: "projects", populate: ["headings", "roles", "sub_categories", "categories", { path: "members", populate: ["role", "member"] }] }).populate("roles");
+      user = await User.findOne({ email: req.body.username }).populate({ path: "projects", populate: ["headings", "roles", "sub_categories", "categories", "movements", { path: "members", populate: ["role", "member"] }] }).populate("roles");
 
     } else {
-      user = await User.findOne({ username: req.body.username }).populate({ path: "projects", populate: ["headings", "roles", "sub_categories", "categories", { path: "members", populate: ["role", "member"] }] }).populate("roles");
+      user = await User.findOne({ username: req.body.username }).populate({ path: "projects", populate: ["headings", "roles", "sub_categories", "categories", "movements", { path: "members", populate: ["role", "member"] }] }).populate("roles");
     }
 
     const matchPassword = await bcrypt.compare(
@@ -20,7 +20,7 @@ async function token(req, res) {
     );
 
     if (matchPassword) {
-      const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET);
+      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
       res.json({
         id: user._id,
         email: user.email,
@@ -58,38 +58,14 @@ async function show(req, res) {
 // Creating a new resource  from storage.
 async function store(req, res) {
   const bodyData = req.body;
-  console.log(bodyData)
   try {
-    if (bodyData.googleId) {
-      console.log("entro");
-      const newUser = await User.create({
-        firstname: bodyData.givenName,
-        lastname: bodyData.familyName,
-        email: bodyData.email,
-      });
-      const token = jwt.sign({ userId: newUser.id }, process.env.SESSION_SECRET);
-      res.json({
-        user: {
-          id: newUser._id,
-          firstname: newUser.firstname,
-          lastname: newUser.lastname,
-          email: newUser.email,
-          addresses: newUser.addresses,
-          orders: newUser.orders,
-          token: token,
-        }
-      })
-    } else {
-      console.log("no entro");
-      const newUser = await User.create({
-        firstname: bodyData.firstname,
-        lastname: bodyData.lastname,
-        password: await bcrypt.hash(`${bodyData.password}`, 8),
-        email: bodyData.email,
-        addresses: bodyData.addresses,
-      });
-      res.json(newUser);
-    }
+    const newUser = await User.create({
+      username: bodyData.username,
+      email: bodyData.email,
+      password: await bcrypt.hash(`${bodyData.password}`, 8),
+      addresses: bodyData.addresses,
+    });
+    res.json(newUser);
   } catch {
     console.log('error')
   }

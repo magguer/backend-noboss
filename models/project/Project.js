@@ -97,6 +97,12 @@ const projectSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Project",
     }],
+    movements: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Movement",
+      },
+    ],
     orders: [
       {
         type: Schema.Types.ObjectId,
@@ -109,13 +115,13 @@ const projectSchema = new Schema(
         ref: "Bookings",
       },
     ],
-    investedMoney: {
+    invested_money: {
       type: Number,
     },
-    billingMoney: {
+    sales_money: {
       type: Number,
     },
-    availableMoney: {
+    spent_money: {
       type: Number,
     },
     banned: {

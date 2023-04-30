@@ -30,8 +30,8 @@ const defaultProjects = [
         orders: [],
         bookings: [],
         invested_money: 0,
-        billing_money: 0,
-        available_money: 0,
+        sales_money: 0,
+        spent_money: 0,
         banned: false
     },
     /*     CuartoExpreso */
@@ -65,8 +65,8 @@ const defaultProjects = [
         orders: [],
         bookings: [],
         invested_money: 0,
-        billing_money: 0,
-        available_money: 0,
+        sales_money: 0,
+        spent_money: 0,
         banned: false
     },
     /*     Noboss */
@@ -98,8 +98,8 @@ const defaultProjects = [
         orders: [],
         bookings: [],
         invested_money: 0,
-        billing_money: 0,
-        available_money: 0,
+        sales_money: 0,
+        spent_money: 0,
         banned: false
     },
     /*     TeroVentas */
@@ -133,8 +133,8 @@ const defaultProjects = [
         orders: [],
         bookings: [],
         invested_money: 0,
-        billing_money: 0,
-        available_money: 0,
+        sales_money: 0,
+        spent_money: 0,
         banned: false
     },
     /*     Nohelia Iguines Personal Trainer */
@@ -166,8 +166,8 @@ const defaultProjects = [
         orders: [],
         bookings: [],
         invested_money: 0,
-        billing_money: 0,
-        available_money: 0,
+        sales_money: 0,
+        spent_money: 0,
         banned: false
     }
 ];
