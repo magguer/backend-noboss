@@ -27,7 +27,7 @@ const userRoutes = require("./user/userRoutes");
 
 module.exports = (app) => {
   app.use("/category", categoryRoutes);
-  app.use("/client", clientRoutes);
+  app.use("/clients", clientRoutes);
   app.use("/discountGroup", discountGroupRoutes);
   app.use("/nobox", noboxRoutes);
   app.use("/products", productRoutes);

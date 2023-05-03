@@ -21,12 +21,14 @@ async function index(req, res) {
     })
       .populate("sub_category")
       .populate("category")
+      .sort({ createdAt: 'desc' })
       .lean();
     return res.json(products);
   } else {
     const products = await Product.find({ project })
       .populate("sub_category")
       .populate("category")
+      .sort({ createdAt: 'desc' })
       .lean();
     res.json(products);
   }

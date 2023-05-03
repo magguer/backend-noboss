@@ -1,9 +1,9 @@
-const { Movement, Project, User } = require("../../models");
+const { Movement, Project, User, Client } = require("../../models");
 
 // Display a listing of the resource.
 async function index(req, res) {
     const project = await Project.findOne({ slug: req.query.project })
-    const movements = await Movement.find({ project }).populate("user").populate("project")
+    const movements = await Movement.find({ project }).populate("user").populate("project").sort({ createdAt: 'desc' })
     res.json(movements)
 }
 
@@ -15,9 +15,11 @@ async function store(req, res) {
     const { amount, reason, type } = req.body
     const project = await Project.findById(req.body.project)
     const user = await User.findById(req.auth.id)
+    const client = await Client.findById(req.body.client)
+
     try {
         const movement = new Movement({
-            amount, reason, type, user: user._id, project: project._id
+            amount, reason, type, user: user._id, project: project._id, client: client?._id
         })
         await movement.save()
 

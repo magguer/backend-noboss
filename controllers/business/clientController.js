@@ -8,10 +8,10 @@ async function index(req, res) {
         const clients = await Client.find({
             project,
             slug: { $regex: regex },
-        }).lean();
+        }).sort({ createdAt: 'desc' }).lean();
         return res.json(clients);
     } else {
-        const clients = await Client.find({ project }).lean();
+        const clients = await Client.find({ project }).sort({ createdAt: 'desc' }).lean();
         res.json(clients);
     }
 }
@@ -33,7 +33,8 @@ async function store(req, res) {
         project.save()
         res.json(client)
     } catch (error) {
-        res.json(error)
+        console.log(error);
+        res.json("error")
     }
 }
 
