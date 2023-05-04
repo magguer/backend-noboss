@@ -154,6 +154,8 @@ async function update(req, res) {
     const category = await Category.findOne({ slug: fields.category });
     const product = await Product.findById(fields.product);
 
+    console.log(fields.product);
+
     await Subcategory.findOneAndUpdate(
       { slug: fields.oldSub_category },
       { $pull: { products: product._id } }

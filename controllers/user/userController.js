@@ -1,6 +1,15 @@
 const { User } = require("../../models");
+const { createClient } = require("@supabase/supabase-js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const formidable = require("formidable");
+const fs = require("fs");
+const path = require("path");
+
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_KEY
+);
 
 
 // Create token
@@ -57,17 +66,59 @@ async function show(req, res) {
 
 // Creating a new resource  from storage.
 async function store(req, res) {
-  const bodyData = req.body;
+  const form = formidable({
+    keepExtensions: true,
+    multiples: true,
+  });
   try {
-    const newUser = await User.create({
-      username: bodyData.username,
-      email: bodyData.email,
-      password: await bcrypt.hash(`${bodyData.password}`, 8),
-      addresses: bodyData.addresses,
+    form.parse(req, async (err, fields, files) => {
+      if (err) {
+        console.log("Error parsing the files");
+        return res.status(400).json({
+          status: "Fail",
+          message: "There was an error parsing the files",
+          error: err,
+        });
+      }
+      if (files.image_url) {
+        const ext = path.extname(files.image_url.filepath);
+        const newFileName = `image_${Date.now()}${ext}`;
+        const { data, error } = await supabase.storage
+          .from("imgs/users/avatars")
+          .upload(newFileName, fs.createReadStream(files.image_url.filepath), {
+            cacheControl: "3600",
+            upsert: false,
+            contentType: files.image_url.mimetype,
+            duplex: "half",
+          });
+        const user = new User({
+          firstname: fields.firstname,
+          lastname: fields.lastname,
+          image_url: newFileName,
+          username: fields.username,
+          email: fields.email,
+          password: await bcrypt.hash(`${fields.password}`, 8),
+          banned: false
+        });
+        await user.save();
+        const newUser = await User.findById(user.id)
+        const token = jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET);
+        return res.json({
+          id: newUser._id,
+          email: newUser.email,
+          username: newUser.username,
+          image_url: newUser.image_url,
+          firstname: newUser.firstname,
+          lastname: newUser.lastname,
+          projects: newUser.projects,
+          roles: newUser.roles,
+          token: token,
+
+        });
+      }
     });
-    res.json(newUser);
-  } catch {
-    console.log('error')
+  } catch (error) {
+    res.json(error);
   }
 }
 
