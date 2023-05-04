@@ -21,8 +21,9 @@ async function token(req, res) {
 
     } else {
       user = await User.findOne({ username: req.body.username }).populate({ path: "projects", populate: ["headings", "roles", "sub_categories", "categories", "movements", { path: "members", populate: ["role", "member"] }] }).populate("roles");
-    }
 
+    }
+    console.log(user);
     const matchPassword = await bcrypt.compare(
       req.body.password,
       user.password
@@ -97,7 +98,7 @@ async function store(req, res) {
           image_url: newFileName,
           username: fields.username,
           email: fields.email,
-          password: await bcrypt.hash(`${fields.password}`, 8),
+          password: fields.password,
           banned: false
         });
         await user.save();
