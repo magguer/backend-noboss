@@ -9,8 +9,7 @@ module.exports = async () => {
   const projects = [];
 
   for (let projectData of defaultProjects) {
-
-    const heading = await Heading.findOne({ slug: projectData.headings[0] })
+    const heading = await Heading.findOne({ slug: projectData.headings[0] });
 
     const project = new Project({
       name: projectData.name,
@@ -19,6 +18,8 @@ module.exports = async () => {
       members: [],
       roles: projectData.roles,
       headings: heading,
+      color_one: projectData.color_one,
+      color_two: projectData.color_two,
       roles: projectData.roles,
       logo_url: projectData.logo_url,
       banners_url: projectData.banners_url,
@@ -30,7 +31,7 @@ module.exports = async () => {
       networks: {
         fb: projectData.networks.fb,
         ig: projectData.networks.ig,
-        ln: projectData.networks.ln
+        ln: projectData.networks.ln,
       },
       products_on: projectData.products_on,
       services_on: projectData.services_on,
@@ -43,11 +44,11 @@ module.exports = async () => {
       invested_money: projectData.invested_money,
       sales_money: projectData.sales_money,
       spent_money: projectData.spent_money,
-      banned: projectData.banned
+      banned: projectData.banned,
     });
     projects.push(project);
-    heading.projects.push(project._id)
-    heading.save()
+    heading.projects.push(project._id);
+    heading.save();
   }
 
   await Project.insertMany(projects);

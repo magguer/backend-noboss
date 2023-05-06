@@ -10,24 +10,36 @@ const projectSchema = new Schema(
     password: {
       type: String,
     },
-    members: [{
-      role: {
+    members: [
+      {
+        role: {
+          type: Schema.Types.ObjectId,
+          ref: "RoleProject",
+        },
+        member: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+        },
+      },
+    ],
+    headings: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Heading",
+      },
+    ],
+    color_one: {
+      type: String,
+    },
+    color_two: {
+      type: String,
+    },
+    roles: [
+      {
         type: Schema.Types.ObjectId,
         ref: "RoleProject",
       },
-      member: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-      }
-    }],
-    headings: [{
-      type: Schema.Types.ObjectId,
-      ref: "Heading",
-    }],
-    roles: [{
-      type: Schema.Types.ObjectId,
-      ref: "RoleProject",
-    }],
+    ],
     slug: {
       type: String,
       required: true,
@@ -35,19 +47,25 @@ const projectSchema = new Schema(
     logo_url: {
       type: String,
     },
-    banners_url: [{
-      type: String,
-    }],
-    needs: [{
-      type: Object,
-    }],
+    banners_url: [
+      {
+        type: String,
+      },
+    ],
+    needs: [
+      {
+        type: Object,
+      },
+    ],
     ubication: {
-      type: String
+      type: String,
     },
-    projects_favs: [{
-      type: Schema.Types.ObjectId,
-      ref: "Project",
-    }],
+    projects_favs: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Project",
+      },
+    ],
     public: {
       type: Boolean,
       required: true,
@@ -67,36 +85,50 @@ const projectSchema = new Schema(
         type: String,
       },
     },
-    categories: [{
-      type: Schema.Types.ObjectId,
-      ref: "Category",
-    }],
-    sub_categories: [{
-      type: Schema.Types.ObjectId,
-      ref: "Subcategory",
-    }],
+    categories: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Category",
+      },
+    ],
+    sub_categories: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Subcategory",
+      },
+    ],
     products_on: { type: Boolean },
     services_on: { type: Boolean },
-    products: [{
-      type: Schema.Types.ObjectId,
-      ref: "Product",
-    }],
-    services: [{
-      type: Schema.Types.ObjectId,
-      ref: "Service",
-    }],
-    clients: [{
-      type: Schema.Types.ObjectId,
-      ref: "Client",
-    }],
-    users_client: [{
-      type: Schema.Types.ObjectId,
-      ref: "User",
-    }],
-    projects_client: [{
-      type: Schema.Types.ObjectId,
-      ref: "Project",
-    }],
+    products: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Product",
+      },
+    ],
+    services: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Service",
+      },
+    ],
+    clients: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Client",
+      },
+    ],
+    users_client: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    projects_client: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Project",
+      },
+    ],
     movements: [
       {
         type: Schema.Types.ObjectId,
@@ -126,8 +158,8 @@ const projectSchema = new Schema(
     },
     banned: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
   { timestamps: true }
 );
@@ -141,13 +173,12 @@ projectSchema.methods.toJSON = function () {
 };
 
 // Bcrypt - Password
-projectSchema.pre('save', async function (next) {
+projectSchema.pre("save", async function (next) {
   if (this.isModified("password") || this.isNew) {
-    this.password = await bcrypt.hash(this.password, 8)
+    this.password = await bcrypt.hash(this.password, 8);
     next();
   }
-})
-
+});
 
 const Project = mongoose.model("Project", projectSchema);
 module.exports = Project;
