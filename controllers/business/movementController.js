@@ -4,6 +4,7 @@ const { Movement, Project, User, Client } = require("../../models");
 async function index(req, res) {
     const project = await Project.findOne({ slug: req.query.project })
     const movements = await Movement.find({ project }).populate("user").populate("project").sort({ createdAt: 'desc' })
+
     res.json(movements)
 }
 

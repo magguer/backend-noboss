@@ -7,7 +7,7 @@ const defaultProjects = [
     members: ["magguer", "iviza"],
     roles: [],
     headings: ["ropa-accesorios"],
-    color_one: "#ebebeb",
+    color_one: "#3b3b3b",
     color_two: "#b6b6b6",
     logo_url: "logo_atic.png",
     banners_url: ["atic-banner-1.png"],
