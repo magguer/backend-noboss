@@ -5,9 +5,6 @@ const projectController = require("../../controllers/project/projectController")
 
 router.get("/", projectController.index);
 router.get("/:slug", projectController.show);
-router.post("/", projectController.create);
-router.patch("/:id", projectController.update);
-router.delete("/:id", projectController.destroy);
 
 router.use(
   checkJwt({
@@ -15,6 +12,10 @@ router.use(
     algorithms: ["HS256"],
   })
 );
+
+router.post("/", projectController.store);
+router.patch("/:id", projectController.update);
+router.delete("/:id", projectController.destroy);
 
 
 module.exports = router;

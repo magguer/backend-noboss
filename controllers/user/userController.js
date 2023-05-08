@@ -23,7 +23,7 @@ async function token(req, res) {
       user = await User.findOne({ username: req.body.username }).populate({ path: "projects", populate: ["headings", "roles", "sub_categories", "categories", "movements", { path: "members", populate: ["role", "member"] }] }).populate("roles");
 
     }
-    console.log(user);
+
     const matchPassword = await bcrypt.compare(
       req.body.password,
       user.password
