@@ -99,11 +99,12 @@ async function store(req, res) {
           username: fields.username,
           email: fields.email,
           password: fields.password,
+          projects: [],
           banned: false
         });
         await user.save();
         const newUser = await User.findById(user.id)
-        const token = jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET);
+        const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET);
         return res.json({
           id: newUser._id,
           email: newUser.email,

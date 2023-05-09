@@ -23,7 +23,7 @@ async function show(req, res) {
 async function store(req, res) {
   const bodyData = req.body;
   const bill = await Bill.create({
-    user: req.auth.userId,
+    user: req.auth.id,
     firstname: bodyData.firstname,
     lastname: bodyData.lastname,
     email: bodyData.email,

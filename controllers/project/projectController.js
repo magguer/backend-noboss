@@ -58,7 +58,7 @@ async function store(req, res) {
           });
 
         const user = await User.findById(req.auth.id)
-
+        console.log(req.auth.id);
         const heading = await Heading.findOne({ slug: fields.heading })
 
         const role = new RoleProject({
@@ -89,9 +89,9 @@ async function store(req, res) {
         });
         await project.save();
 
-        user.projects.push(project.id)
-        heading.projects.push(project.id)
-        role.project = project.id
+        user.projects.push(project._id)
+        heading.projects.push(project._id)
+        role.project = project._id
         await user.save()
         await role.save()
         await heading.save()
