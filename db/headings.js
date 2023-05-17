@@ -8,9 +8,9 @@ const defaultHeadings = [
     },
     /*     Diseño Gráfico */
     {
-        name: "Diseño Gráfico",
-        slug: "diseno-grafico",
-        icon_url: "diseno-grafico-icono-white.png",
+        name: "Artes Visuales",
+        slug: "artes-visuales",
+        icon_url: "artes-visuales-icono-white.png",
         projects: []
     },
     /*     Envases/Packaging */

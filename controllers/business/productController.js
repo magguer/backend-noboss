@@ -90,13 +90,12 @@ async function store(req, res) {
           arrImages.push(newFileName);
         }
 
-        const category = await Category.findOne({
-          slug: fields.category,
-        });
+        const category = await Category.findById(
+          fields.category,
+        );
 
-        const sub_category = await Subcategory.findOne({
-          slug: fields.sub_category,
-        });
+        const sub_category = await Subcategory.findById(fields.sub_category
+        );
 
         const project = await Project.findOne({ slug: fields.project });
 

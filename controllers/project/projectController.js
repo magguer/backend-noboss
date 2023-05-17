@@ -58,7 +58,6 @@ async function store(req, res) {
           });
 
         const user = await User.findById(req.auth.id)
-        console.log(req.auth.id);
         const heading = await Heading.findOne({ slug: fields.heading })
 
         const role = new RoleProject({
@@ -73,8 +72,8 @@ async function store(req, res) {
           password: fields.password,
           members: [{ role, member: req.auth.id }],
           headings: [heading._id],
-          color_one: "#02997d",
-          color_two: "#c9c9c9",
+          color_one: fields.color_one || "#02997d",
+          color_two: fields.color_two || "#c9c9c9",
           roles: [role],
           slug: slugify(fields.name).toLowerCase(),
           logo_url: newFileName,
