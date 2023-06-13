@@ -9,20 +9,19 @@ module.exports = async () => {
   const projects = [];
 
   for (let projectData of defaultProjects) {
-    const heading = await Heading.findOne({ slug: projectData.headings[0] });
-
+    const heading = await Heading.findOne({ slug: projectData.heading });
     const project = new Project({
       name: projectData.name,
       slug: projectData.slug,
       password: await bcrypt.hash(projectData.password, 8),
       members: [],
       roles: projectData.roles,
-      headings: heading,
+      heading: heading,
       color_one: projectData.color_one,
       color_two: projectData.color_two,
       roles: projectData.roles,
       logo_url: projectData.logo_url,
-      banners_url: projectData.banners_url,
+      banner_url: projectData.banner_url,
       needs: projectData.needs,
       ubication: projectData.ubication,
       projects_fav: projectData.projects_fav,
@@ -46,6 +45,7 @@ module.exports = async () => {
       spent_money: projectData.spent_money,
       banned: projectData.banned,
     });
+
     projects.push(project);
     heading.projects.push(project._id);
     heading.save();

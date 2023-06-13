@@ -2,7 +2,7 @@ const { Client, Project } = require("../../models");
 
 // Display a listing of the resource.
 async function index(req, res) {
-    const project = await Project.find({ slug: req.query.project });
+    const project = await Project.findById(req.query.project);
     if (req.query.search) {
         const regex = new RegExp(req.query.search, "i");
         const clients = await Client.find({

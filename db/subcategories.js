@@ -35,6 +35,15 @@ const defaultSubcategories = [
         products: [],
         services: [],
     },
+    {
+        name: "Producción",
+        slug: "produccion",
+        img_url: "",
+        project: "cuartoexpreso",
+        category: "audio",
+        products: [],
+        services: [],
+    },
 
 
 ]

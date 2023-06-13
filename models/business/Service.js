@@ -6,7 +6,11 @@ const serviceSchema = new Schema(
             type: String,
             required: true,
         },
-        subname: {
+        slug: {
+            type: String,
+            required: true,
+        },
+        sku: {
             type: String,
         },
         description: {
@@ -15,9 +19,9 @@ const serviceSchema = new Schema(
         details: {
             type: Object,
         },
-        slug: {
-            type: String,
-            required: true,
+        category: {
+            type: Schema.Types.ObjectId,
+            ref: "Category",
         },
         sub_category: {
             type: Schema.Types.ObjectId,
@@ -42,20 +46,28 @@ const serviceSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "Booking",
         }],
-        totalBookings: {
+        total_bookings: {
             type: Number,
         },
-        price: {
+        price_from: {
             type: Number,
             required: true,
+        },
+        price_to: {
+            type: Number,
         },
         cost: {
             type: Number,
         },
-        providers: [
+        projects_provider: [
             {
                 type: Schema.Types.ObjectId,
                 ref: "Project",
+            }
+        ],
+        provider: [
+            {
+                type: Object,
             }
         ]
     },

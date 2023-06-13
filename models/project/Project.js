@@ -22,12 +22,11 @@ const projectSchema = new Schema(
         },
       },
     ],
-    headings: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Heading",
-      },
-    ],
+    heading:
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Heading",
+    },
     color_one: {
       type: String,
     },
@@ -47,11 +46,10 @@ const projectSchema = new Schema(
     logo_url: {
       type: String,
     },
-    banners_url: [
-      {
-        type: String,
-      },
-    ],
+    banner_url:
+    {
+      type: String,
+    },
     needs: [
       {
         type: Object,
@@ -164,13 +162,13 @@ const projectSchema = new Schema(
   { timestamps: true }
 );
 
-// No Password in JWT
+/* // No Password in JWT
 projectSchema.methods.toJSON = function () {
   const project = this.toObject();
   project.id = project._id.toString();
   delete project.password;
   return project;
-};
+}; */
 
 // Bcrypt - Password
 projectSchema.pre("save", async function (next) {

@@ -14,6 +14,7 @@ const defaultProducts = [
     price: 320,
     cost: 180,
     stock: 5,
+    projects_provider: [],
     providers: [],
   },
   {
@@ -31,6 +32,7 @@ const defaultProducts = [
     price: 320,
     cost: 180,
     stock: 5,
+    projects_provider: [],
     providers: [],
   },
   {
@@ -48,6 +50,7 @@ const defaultProducts = [
     price: 320,
     cost: 180,
     stock: 5,
+    projects_provider: [],
     providers: [],
   },
   {
@@ -65,6 +68,7 @@ const defaultProducts = [
     price: 320,
     cost: 180,
     stock: 5,
+    projects_provider: [],
     providers: [],
   },
   {
@@ -82,6 +86,7 @@ const defaultProducts = [
     price: 320,
     cost: 180,
     stock: 5,
+    projects_provider: [],
     providers: [],
   },
   {
@@ -99,6 +104,7 @@ const defaultProducts = [
     price: 320,
     cost: 180,
     stock: 5,
+    projects_provider: [],
     providers: [],
   },
   {
@@ -116,6 +122,7 @@ const defaultProducts = [
     price: 320,
     cost: 180,
     stock: 5,
+    projects_provider: [],
     providers: [],
   },
   {
@@ -133,6 +140,7 @@ const defaultProducts = [
     price: 320,
     cost: 180,
     stock: 5,
+    projects_provider: [],
     providers: [],
   },
   {
@@ -150,6 +158,7 @@ const defaultProducts = [
     price: 320,
     cost: 180,
     stock: 5,
+    projects_provider: [],
     providers: [],
   },
   {
@@ -167,6 +176,7 @@ const defaultProducts = [
     price: 580,
     cost: 320,
     stock: 10,
+    projects_provider: [],
     providers: [],
   },
   {
@@ -184,6 +194,7 @@ const defaultProducts = [
     price: 580,
     cost: 320,
     stock: 10,
+    projects_provider: [],
     providers: [],
   },
   {
@@ -201,6 +212,7 @@ const defaultProducts = [
     price: 580,
     cost: 320,
     stock: 10,
+    projects_provider: [],
     providers: [],
   },
   {
@@ -218,6 +230,7 @@ const defaultProducts = [
     price: 1200,
     cost: 700,
     stock: 5,
+    projects_provider: [],
     providers: [],
   },
   {
@@ -235,6 +248,7 @@ const defaultProducts = [
     price: 1200,
     cost: 700,
     stock: 5,
+    projects_provider: [],
     providers: [],
   },
   {
@@ -252,6 +266,7 @@ const defaultProducts = [
     price: 1200,
     cost: 700,
     stock: 5,
+    projects_provider: [],
     providers: [],
   },
   {
@@ -269,6 +284,7 @@ const defaultProducts = [
     price: 1095,
     cost: 500,
     stock: 3,
+    projects_provider: [],
     providers: [],
   },
   {
@@ -286,6 +302,7 @@ const defaultProducts = [
     price: 1095,
     cost: 500,
     stock: 2,
+    projects_provider: [],
     providers: [],
   },
   {
@@ -303,6 +320,7 @@ const defaultProducts = [
     price: 1095,
     cost: 500,
     stock: 2,
+    projects_provider: [],
     providers: [],
   },
 ];

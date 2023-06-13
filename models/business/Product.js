@@ -56,10 +56,14 @@ const productSchema = new Schema(
     stock: {
       type: Number,
     },
+    projects_provider: [{
+      type: Schema.Types.ObjectId,
+      ref: "Project",
+    }],
     providers: [
       {
-        type: Schema.Types.ObjectId,
-        ref: "Project",
+        type: Object,
+
       }
     ]
   },

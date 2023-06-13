@@ -17,10 +17,10 @@ async function token(req, res) {
   try {
     let user
     if (req.body.username.includes("@")) {
-      user = await User.findOne({ email: req.body.username }).populate({ path: "projects", populate: ["headings", "roles", "sub_categories", "categories", "movements", { path: "members", populate: ["role", "member"] }] }).populate("roles");
+      user = await User.findOne({ email: req.body.username }).populate({ path: "projects", populate: ["heading", "roles", "sub_categories", "categories", "movements", { path: "members", populate: ["role", "member"] }] }).populate("roles");
 
     } else {
-      user = await User.findOne({ username: req.body.username }).populate({ path: "projects", populate: ["headings", "roles", "sub_categories", "categories", "movements", { path: "members", populate: ["role", "member"] }] }).populate("roles");
+      user = await User.findOne({ username: req.body.username }).populate({ path: "projects", populate: ["heading", "roles", "sub_categories", "categories", "movements", { path: "members", populate: ["role", "member"] }] }).populate("roles");
 
     }
 

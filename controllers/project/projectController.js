@@ -13,14 +13,13 @@ const supabase = createClient(
 // Display a listing of projects.
 async function index(req, res) {
   if (req.query.public === "true") {
-    const projects = await Project.find({ public: true }).populate("headings").populate("movements");
+    const projects = await Project.find({ public: true }).populate("heading").populate("movements");
     return res.json(projects);
   } else {
-    const projects = await Project.find().populate("headings").populate("movements");
+    const projects = await Project.find().populate("heading").populate("movements");
     res.json(projects);
   }
 }
-
 
 // Display the specified resource.
 async function show(req, res) {
@@ -71,7 +70,7 @@ async function store(req, res) {
           name: fields.name,
           password: fields.password,
           members: [{ role, member: req.auth.id }],
-          headings: [heading._id],
+          heading: heading._id,
           color_one: fields.color_one || "#02997d",
           color_two: fields.color_two || "#c9c9c9",
           roles: [role],
@@ -95,7 +94,7 @@ async function store(req, res) {
         await role.save()
         await heading.save()
 
-        const newProject = await Project.findById(project.id).populate(["headings", "roles", "sub_categories", "categories", "movements", { path: "members", populate: ["role", "member"] }])
+        const newProject = await Project.findById(project.id).populate(["heading", "roles", "sub_categories", "categories", "movements", { path: "members", populate: ["role", "member"] }])
         return res.json(
           newProject
         );
@@ -107,7 +106,28 @@ async function store(req, res) {
 }
 
 // Update the specified resource in storage.
-async function update(req, res) { }
+async function update(req, res) {
+  const heading = await Heading.findById(req.body.heading)
+  const project = await Project.findByIdAndUpdate(req.params.id, {
+    name: req.body.name,
+    password: req.body.password,
+    services_on: req.body.services,
+    products_on: req.body.products,
+    public: req.body.public_project,
+    provider: req.body.provider_project,
+    color_one: req.body.color_one,
+    color_two: req.body.color_two,
+    heading: heading._id
+  }, { returnOriginal: false }).populate(["heading", "roles", "sub_categories", "categories", "movements", { path: "members", populate: ["role", "member"] }])
+
+  await Heading.findByIdAndUpdate(req.body.originalHeading, { $pull: { projects: project._id } })
+  heading.projects.push(project)
+  heading.save()
+
+  return res.json(
+    project
+  );
+}
 
 // Remove the specified resource from storage.
 async function destroy(req, res) {
@@ -119,6 +139,11 @@ async function destroy(req, res) {
   });
 }
 
+// Project access the specified resource from storage.
+async function projectAccess(req, res) {
+
+}
+
 
 module.exports = {
   index,
@@ -126,4 +151,5 @@ module.exports = {
   store,
   update,
   destroy,
+  projectAccess
 };
