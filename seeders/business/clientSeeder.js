@@ -12,7 +12,7 @@ module.exports = async () => {
     for (let clientData of defaultClients) {
         const project = await Project.findOne({ slug: clientData.project })
 
-        const { name, type, email, phone, orders, bookings } = clientData
+        const { name, type, email, phone, orders, orders_quantity, bookings, bookings_quantity } = clientData
         const client = new Client({
             name,
             type,
@@ -20,7 +20,9 @@ module.exports = async () => {
             phone,
             project,
             orders,
+            orders_quantity,
             bookings,
+            bookings_quantity
         });
 
         project.clients.push(client)

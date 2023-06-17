@@ -13,15 +13,7 @@ const supabase = createClient(
 // Display a listing of the resource.
 async function index(req, res) {
   const project = await Project.findById(req.query.project);
-  if (req.query.best) {
-    const products = await Product.find({ project })
-      .populate("sub_category")
-      .populate("category")
-      .sort({ sales_quantity: "desc" })
-      .limit(5)
-      .lean();
-    return res.json(products);
-  } else if (req.query.search) {
+  if (req.query.search) {
     const regex = new RegExp(req.query.search, "i");
     const products = await Product.find({
       project,
@@ -29,14 +21,15 @@ async function index(req, res) {
     })
       .populate("sub_category")
       .populate("category")
-      .sort({ createdAt: 'desc' })
+      .sort({ sales_quantity: 'desc' })
       .lean();
     return res.json(products);
   } else {
     const products = await Product.find({ project })
       .populate("sub_category")
       .populate("category")
-      .sort({ createdAt: 'desc' })
+      .sort({ sales_quantity: 'desc' })
+      .limit(req.query.best ? 5 : null)
       .lean();
     res.json(products);
   }
@@ -117,6 +110,7 @@ async function store(req, res) {
           category: category._id,
           sub_category: sub_category._id,
           project: project._id,
+          sales_quantity: 0,
           price: fields.price,
           cost: fields.cost,
           stock: fields.stock,

@@ -7,11 +7,14 @@ async function index(req, res) {
         const regex = new RegExp(req.query.search, "i");
         const clients = await Client.find({
             project,
-            slug: { $regex: regex },
+            name: { $regex: regex },
         }).sort({ createdAt: 'desc' }).lean();
         return res.json(clients);
     } else {
-        const clients = await Client.find({ project }).sort({ createdAt: 'desc' }).lean();
+        const clients = await Client.find({ project })
+            .sort(req.query.best ? { orders_quantity: 'desc' } : { createdAt: 'desc' })
+            .limit(req.query.best ? 5 : null)
+            .lean();
         res.json(clients);
     }
 }
@@ -23,10 +26,9 @@ async function show(req, res) { }
 async function store(req, res) {
     const project = await Project.findOne({ slug: req.body.project });
     const { name, email, phone, type } = req.body
-    console.log(type);
     try {
         const client = new Client({
-            name, email, phone, type, project, orders: []
+            name, email, phone, type, project, orders: [], orders_quantity: 0, bookings: [], bookings_quantity: 0
         })
         await client.save()
         project.clients.push(client)

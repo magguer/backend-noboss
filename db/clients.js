@@ -6,7 +6,9 @@ const defaultClients = [
         phone: "092683955",
         project: "atic",
         orders: [],
+        orders_quantity: 0,
         bookings: [],
+        bookings_quantity: 0
     },
     {
         name: "Garabato",
@@ -14,8 +16,9 @@ const defaultClients = [
         email: "garabato@gmail.com",
         phone: "092683955",
         project: "cuartoexpreso",
-        orders: [],
+        orders_quantity: 0,
         bookings: [],
+        bookings_quantity: 0
     },
     {
         name: "Micaela",
@@ -23,8 +26,9 @@ const defaultClients = [
         email: "micaela@gmail.com",
         phone: "092683955",
         project: "niguines_ptrainer",
-        orders: [],
+        orders_quantity: 0,
         bookings: [],
+        bookings_quantity: 0
     }
 ]
 

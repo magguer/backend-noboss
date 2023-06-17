@@ -46,6 +46,7 @@ async function store(req, res) {
         }
         order.details = cart
         project.sales_money += +amount
+        client.orders_quantity = client.orders_quantity + 1
         client.orders.push(order)
         await order.save()
         await client.save()

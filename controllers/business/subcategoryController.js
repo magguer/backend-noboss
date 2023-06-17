@@ -6,7 +6,6 @@ const { findOneAndDelete } = require("../../models/business/Category");
 async function index(req, res) {
     const project = await Project.find({ slug: req.query.project });
     const category = await Category.findById(req.query.category);
-    console.log(req.query);
     const subcategories = await Subcategory.find({ project, category })
     res.json(subcategories);
 

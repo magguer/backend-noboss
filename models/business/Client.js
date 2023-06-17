@@ -23,10 +23,16 @@ const clientSchema = new Schema(
             type: Schema.Types.ObjectId,
             ref: "Order",
         }],
+        orders_quantity: {
+            type: Number
+        },
         bookings: [{
             type: Schema.Types.ObjectId,
             ref: "Booking",
         }],
+        bookings_quantity: {
+            type: Number
+        },
         adress: {
             type: Schema.Types.ObjectId,
             ref: "Adress",

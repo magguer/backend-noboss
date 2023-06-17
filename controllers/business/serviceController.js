@@ -19,6 +19,7 @@ async function index(req, res) {
             .populate("sub_category")
             .populate("category")
             .sort({ createdAt: 'desc' })
+            .limit(req.query.best ? 5 : null)
             .lean();
         res.json(services);
     }
