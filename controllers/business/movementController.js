@@ -1,4 +1,4 @@
-const { Movement, Project, User, Client } = require("../../models");
+const { Movement, Project, User, Client, Order, Product } = require("../../models");
 
 // Display a listing of the resource.
 async function index(req, res) {
@@ -18,28 +18,46 @@ async function store(req, res) {
     const user = await User.findById(req.auth.id)
     const client = await Client.findById(req.body.client)
 
-    try {
-        const movement = new Movement({
-            amount, reason, type, user: user._id, project: project._id, client: client?._id
-        })
-        await movement.save()
 
-        user.movements.push(movement)
-        project.movements.push(movement)
+    const movement = new Movement({
+        amount, reason, type, user: user._id, project: project._id, client: client?._id
+    })
+    await movement.save()
 
-        if (type === "spent") {
-            project.spent_money += +amount
-        }
+    user.movements.push(movement)
+    project.movements.push(movement)
 
-        await user.save()
-        await project.save()
-
-        const newMov = await Movement.findById(movement.id).populate("user")
-
-        res.json(newMov)
-    } catch (error) {
-        res.json(error)
+    if (type === "spent") {
+        project.spent_money += +amount
     }
+    if (type === "sale") {
+        const { cart } = req.body
+        const order = new Order({
+            project, client
+        })
+        for (productData of cart) {
+            const product = await Product.findById(productData.product._id)
+            product.orders.push(order)
+            /* order.total_price += productData.fixed_price */
+            product.sales_quantity += +productData.quantity
+            product.stock -= productData.quantity
+            order.products.push(product)
+            await product.save()
+        }
+        order.details = cart
+        project.sales_money += +amount
+        client.orders.push(order)
+        await order.save()
+        await client.save()
+    }
+
+    await user.save()
+    await project.save()
+
+    const newMov = await Movement.findById(movement.id).populate("user")
+
+    res.json(newMov)
+
 }
 
 // Update the specified resource in storage.

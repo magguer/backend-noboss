@@ -19,22 +19,25 @@ const orderSchema = new Schema(
     arrival_date: {
       type: Date,
     },
+    client: {
+      type: Schema.Types.ObjectId,
+      ref: "Client"
+    },
     user_client: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "User"
     },
     project_client: {
       type: Schema.Types.ObjectId,
-      ref: "Project",
+      ref: "Project"
     },
     products: [{
       type: Schema.Types.ObjectId,
-      ref: "Product",
+      ref: "Product"
     }],
     details: [{}],
     total_price: {
       type: Number,
-      required: true
     }
   },
   { timestamps: true }

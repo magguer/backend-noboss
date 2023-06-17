@@ -6,7 +6,7 @@ module.exports = async () => {
 
   for (let productData of defaultProducts) {
 
-    const { model, slug, sku, subname, description, details, images_url, orders, price, cost, stock, projects_provider, providers } = productData
+    const { model, slug, sku, subname, description, details, images_url, orders, sales_quantity, price, cost, stock, projects_provider, providers } = productData
 
     const project = await Project.findOne({ slug: productData.project })
     const category = await Category.findOne({ slug: productData.category })
@@ -15,7 +15,7 @@ module.exports = async () => {
 
 
     const product = new Product({
-      model, slug, sku, subname, description, details, category, sub_category, project, images_url, orders, price, cost, stock, projects_provider, providers
+      model, slug, sku, subname, description, details, category, sub_category, project, images_url, orders, sales_quantity, price, cost, stock, projects_provider, providers
     });
     products.push(product);
     project.products.push(product)

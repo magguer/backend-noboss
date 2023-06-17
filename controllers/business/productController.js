@@ -13,7 +13,15 @@ const supabase = createClient(
 // Display a listing of the resource.
 async function index(req, res) {
   const project = await Project.findById(req.query.project);
-  if (req.query.search) {
+  if (req.query.best) {
+    const products = await Product.find({ project })
+      .populate("sub_category")
+      .populate("category")
+      .sort({ sales_quantity: "desc" })
+      .limit(5)
+      .lean();
+    return res.json(products);
+  } else if (req.query.search) {
     const regex = new RegExp(req.query.search, "i");
     const products = await Product.find({
       project,
