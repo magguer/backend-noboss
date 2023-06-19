@@ -33,9 +33,9 @@ const clientSchema = new Schema(
         bookings_quantity: {
             type: Number
         },
-        adress: {
+        address: {
             type: Schema.Types.ObjectId,
-            ref: "Adress",
+            ref: "Address",
         }
     },
     { timestamps: true }

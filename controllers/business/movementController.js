@@ -18,7 +18,6 @@ async function store(req, res) {
     const user = await User.findById(req.auth.id)
     const client = await Client.findById(req.body.client)
 
-
     const movement = new Movement({
         amount, reason, type, user: user._id, project: project._id, client: client?._id
     })

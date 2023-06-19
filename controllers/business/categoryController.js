@@ -4,7 +4,7 @@ const { default: slugify } = require("slugify");
 // Display a listing of the resource.
 async function index(req, res) {
   const project = await Project.findById(req.query.project);
-  const categories = await Category.find({ project })
+  const categories = await Category.find({ project }).populate("sub_categories")
   res.json(categories);
 }
 

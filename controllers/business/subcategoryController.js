@@ -38,7 +38,7 @@ async function update(req, res) { }
 // Remove the specified resource from storage.
 async function destroy(req, res) {
     const project = await Project.findById(req.query.project)
-    const category = await Category.findById(req.query.category)
+    const category = await Category.findById(req.query.category).populate("sub_categories")
     category.sub_categories.splice(category.sub_categories.indexOf(category), 1);
     project.sub_categories.splice(project.sub_categories.indexOf(project), 1);
 
