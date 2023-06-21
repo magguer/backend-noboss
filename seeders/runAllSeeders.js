@@ -29,12 +29,13 @@ async function runAllSeeders() {
   await require("./business/productSeeder")();
   await require("./business/serviceSeeder")();
   await require("./business/clientSeeder")();
+  await require("./payment/bookingSeeder")();
   /*await require("./business/discountGroupSeeder")();
  await require("./business/noboxSeeder")();
 
 
  await require("./payment/billSeeder")();
- await require("./payment/bookingSeeder")();
+
  await require("./payment/orderSeeder")();
  await require("./payment/statusSeeder")(); */
 

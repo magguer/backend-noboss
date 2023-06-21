@@ -1,16 +1,19 @@
-const { faker } = require("@faker-js/faker");
-const { Booking } = require("../../models");
-
-faker.locale = "es";
+const defaultBookings = require("../../db/bookings")
+const { Booking, Project, Service } = require("../../models");
 
 module.exports = async () => {
     const bookings = [];
 
-    for (let i = 0; i <= Number(process.env.TOTAL_DISCOUNT_GROUP); i++) {
+    for (let bookingData of defaultBookings) {
+        const project = await Project.findOne({ slug: bookingData.project })
+        const service = await Service.findOne({ slug: bookingData.service })
         const booking = new Booking({
+            project,
+            service,
+            booking_date: bookingData.booking_date
         });
-        discountGroups.push(discountGroup);
+        bookings.push(booking);
     }
-    await DiscountGroup.insertMany(discountGroups);
+    await Booking.insertMany(bookings);
     console.log("[Database] Se corrió el seeder de Bookings.");
 };

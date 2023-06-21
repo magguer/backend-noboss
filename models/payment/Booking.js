@@ -16,6 +16,10 @@ const bookingSchema = new Schema(
     payment_date: {
       type: Date,
     },
+    client: {
+      type: Schema.Types.ObjectId,
+      ref: "Client",
+    },
     user_client: {
       type: Schema.Types.ObjectId,
       ref: "User",
@@ -28,11 +32,6 @@ const bookingSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Service",
     },
-    details: [{}],
-    total_price: {
-      type: Number,
-      require: true
-    }
   },
   { timestamps: true }
 );
