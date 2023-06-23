@@ -4,7 +4,7 @@ const { expressjwt: checkJwt } = require("express-jwt");
 const projectController = require("../../controllers/project/projectController");
 
 router.get("/", projectController.index);
-router.get("/:slug", projectController.show);
+router.get("/:id", projectController.show);
 
 router.use(
   checkJwt({

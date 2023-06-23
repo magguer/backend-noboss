@@ -44,7 +44,7 @@ const defaultRolesProject = [
         slug: "administrador",
         description: "Admininistración del Proyecto.",
         level: 500,
-        project: "niguines_ptrainer",
+        project: "noheliaiguines_personaltrainer",
         members: ["noheiguines"]
     }
 ]

@@ -4,7 +4,6 @@ const { Movement, Project, User, Client, Order, Product } = require("../../model
 async function index(req, res) {
     const project = await Project.findById(req.query.project)
     const movements = await Movement.find({ project }).populate("user").populate("project").sort({ createdAt: 'desc' })
-
     res.json(movements)
 }
 
@@ -29,6 +28,7 @@ async function store(req, res) {
     if (type === "spent") {
         project.spent_money += +amount
     }
+
     if (type === "sale") {
         const { cart } = req.body
         const order = new Order({
@@ -43,6 +43,7 @@ async function store(req, res) {
             order.products.push(product)
             await product.save()
         }
+
         order.details = cart
         project.sales_money += +amount
         client.orders_quantity = client.orders_quantity + 1

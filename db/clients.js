@@ -25,7 +25,7 @@ const defaultClients = [
         type: "Recurrente",
         email: "micaela@gmail.com",
         phone: "092683955",
-        project: "niguines_ptrainer",
+        project: "noheliaiguines_personaltrainer",
         orders_quantity: 0,
         bookings: [],
         bookings_quantity: 0

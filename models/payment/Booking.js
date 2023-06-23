@@ -6,15 +6,16 @@ const bookingSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Project",
     },
-    status: {
+    booking_status: {
       type: Schema.Types.ObjectId,
-      ref: "Status",
+      ref: "BookingStatus",
     },
     booking_date: {
       type: Date,
     },
-    payment_date: {
-      type: Date,
+    order: {
+      type: Schema.Types.ObjectId,
+      ref: "Order",
     },
     client: {
       type: Schema.Types.ObjectId,

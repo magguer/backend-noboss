@@ -2,18 +2,18 @@ require("dotenv").config();
 async function runAllSeeders() {
   const { mongoose } = require("../db");
 
-  await mongoose.connection.dropDatabase();
-  // await mongoose.connection.dropCollection("addresses");
-  // await mongoose.connection.dropCollection("roleadmins");
-  // await mongoose.connection.dropCollection("admins");
-  // await mongoose.connection.dropCollection("users");
-  // await mongoose.connection.dropCollection("headings");
-  // await mongoose.connection.dropCollection("projects");
-  // await mongoose.connection.dropCollection("roleprojects");
-  // await mongoose.connection.dropCollection("categories");
-  // await mongoose.connection.dropCollection("subcategories");
-  // await mongoose.connection.dropCollection("products");
-  // await mongoose.connection.dropCollection("clients");
+  // await mongoose.connection.dropDatabase();
+  await mongoose.connection.dropCollection("addresses");
+  await mongoose.connection.dropCollection("roleadmins");
+  await mongoose.connection.dropCollection("admins");
+  await mongoose.connection.dropCollection("users");
+  await mongoose.connection.dropCollection("headings");
+  await mongoose.connection.dropCollection("projects");
+  await mongoose.connection.dropCollection("roleprojects");
+  await mongoose.connection.dropCollection("categories");
+  await mongoose.connection.dropCollection("subcategories");
+  await mongoose.connection.dropCollection("products");
+  await mongoose.connection.dropCollection("clients");
 
   await require("./user/addressSeeder")();
   await require("./user/roleAdminSeeder")();
@@ -30,14 +30,16 @@ async function runAllSeeders() {
   await require("./business/serviceSeeder")();
   await require("./business/clientSeeder")();
   await require("./payment/bookingSeeder")();
+  await require("./payment/bookingStatusSeeder")();
+  await require("./payment/orderStatusSeeder")();
   /*await require("./business/discountGroupSeeder")();
  await require("./business/noboxSeeder")();
 
 
  await require("./payment/billSeeder")();
 
- await require("./payment/orderSeeder")();
- await require("./payment/statusSeeder")(); */
+ await require("./payment/orderSeeder")();*/
+
 
 
   console.log("[Database] ¡Los datos de prueba fueron insertados!");

@@ -6,7 +6,7 @@ const orderSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Project",
     },
-    status: {
+    order_status: {
       type: Schema.Types.ObjectId,
       ref: "Status",
     },
@@ -35,6 +35,10 @@ const orderSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Product"
     }],
+    service: {
+      type: Schema.Types.ObjectId,
+      ref: "Service"
+    },
     details: [{}],
     total_price: {
       type: Number,

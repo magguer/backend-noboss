@@ -1,5 +1,5 @@
-const defaultBookings = require("../../db/bookings")
 const { Booking, Project, Service } = require("../../models");
+const defaultBookings = require("../../db/bookings")
 
 module.exports = async () => {
     const bookings = [];

@@ -148,7 +148,7 @@ const defaultProjects = [
   /*     Nohelia Iguines Personal Trainer */
   {
     name: "Nohelia Iguines - Personal Triner",
-    slug: "niguines_ptrainer",
+    slug: "noheliaiguines_personaltrainer",
     password: "1234",
     members: ["noheiguines"],
     roles: [],

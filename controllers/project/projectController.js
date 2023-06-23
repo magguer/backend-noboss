@@ -12,19 +12,25 @@ const supabase = createClient(
 
 // Display a listing of projects.
 async function index(req, res) {
+
+  if (req.query.search) {
+    const regex = new RegExp(req.query.search, "i");
+    const projects = await Project.find({ slug: { $regex: regex }, }).populate("heading").populate("movements");
+    return res.json(projects);
+  }
   if (req.query.public === "true") {
     const projects = await Project.find({ public: true }).populate("heading").populate("movements");
     return res.json(projects);
   } else {
     const projects = await Project.find().populate("heading").populate("movements");
-    res.json(projects);
+    return res.json(projects);
   }
+
 }
 
 // Display the specified resource.
 async function show(req, res) {
-  const projectSlug = req.params.slug;
-  const project = await Project.findOne({ slug: projectSlug }).populate("movements");
+  const project = await Project.findById(req.params.id).populate("movements");
   res.json(project);
 }
 

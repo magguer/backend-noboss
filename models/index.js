@@ -11,8 +11,9 @@ const Client = require("./business/Client");
 
 // payment 
 const Booking = require("./payment/Booking");
+const BookingStatus = require("./payment/BookingStatus");
 const Order = require("./payment/Order");
-const Status = require("./payment/Status");
+const OrderStatus = require("./payment/OrderStatus");
 const Bill = require("./payment/Bill");
 
 // project 
@@ -38,8 +39,9 @@ module.exports = {
   Client,
 
   Booking,
+  BookingStatus,
   Order,
-  Status,
+  OrderStatus,
   Bill,
 
   Project,
