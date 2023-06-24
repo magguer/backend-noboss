@@ -146,8 +146,20 @@ async function destroy(req, res) {
 }
 
 // Project access the specified resource from storage.
-async function projectAccess(req, res) {
-
+async function application(req, res) {
+  if (req.body.pre_status) {
+    await Project.findByIdAndUpdate(req.params.id,
+      {
+        $pull: { applications: { user: req.auth.id } }
+      })
+    res.status(200)
+  } else {
+    await Project.findByIdAndUpdate(req.params.id,
+      {
+        $push: { applications: { user: req.auth.id, status: false } }
+      })
+    res.status(200)
+  }
 }
 
 
@@ -157,5 +169,5 @@ module.exports = {
   store,
   update,
   destroy,
-  projectAccess
+  application
 };

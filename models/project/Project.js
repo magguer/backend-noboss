@@ -33,12 +33,12 @@ const projectSchema = new Schema(
     color_two: {
       type: String,
     },
-    petitions: [{
+    applications: [{
       user: {
         type: Schema.Types.ObjectId,
         ref: "User",
       },
-      status: { type: String }
+      status: { type: Boolean }
     }],
     roles: [
       {

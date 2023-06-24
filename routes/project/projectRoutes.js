@@ -13,6 +13,8 @@ router.use(
   })
 );
 
+
+router.patch("/appli/:id", projectController.application)
 router.post("/", projectController.store);
 router.patch("/:id", projectController.update);
 router.delete("/:id", projectController.destroy);
