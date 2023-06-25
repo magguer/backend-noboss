@@ -10,6 +10,9 @@ const orderSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Status",
     },
+    payment_method: {
+      type: String
+    },
     payment_date: {
       type: Date,
     },

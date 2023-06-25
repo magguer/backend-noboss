@@ -3,7 +3,7 @@ const { Movement, Project, User, Client, Order, Product } = require("../../model
 // Display a listing of the resource.
 async function index(req, res) {
     const project = await Project.findById(req.query.project)
-    const movements = await Movement.find({ project }).populate("user").populate("project").sort({ createdAt: 'desc' })
+    const movements = await Movement.find({ project }).populate("user").populate("project").populate("order").sort({ createdAt: 'desc' })
     res.json(movements)
 }
 
@@ -30,9 +30,9 @@ async function store(req, res) {
     }
 
     if (type === "sale") {
-        const { cart } = req.body
+        const { cart, payMethod } = req.body
         const order = new Order({
-            project, client
+            project, client, details: cart, payment_method: payMethod
         })
         for (productData of cart) {
             const product = await Product.findById(productData.product._id)
@@ -43,11 +43,12 @@ async function store(req, res) {
             order.products.push(product)
             await product.save()
         }
-
+        movement.order = order
         order.details = cart
         project.sales_money += +amount
         client.orders_quantity = client.orders_quantity + 1
         client.orders.push(order)
+        await movement.save()
         await order.save()
         await client.save()
     }

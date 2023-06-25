@@ -1,5 +1,5 @@
 const { default: slugify } = require("slugify");
-const { Project, RoleProject, Heading, User } = require("../../models");
+const { Project, RoleProject, Heading, User, Application } = require("../../models");
 const { createClient } = require("@supabase/supabase-js");
 const formidable = require("formidable");
 const fs = require("fs");
@@ -15,14 +15,14 @@ async function index(req, res) {
 
   if (req.query.search) {
     const regex = new RegExp(req.query.search, "i");
-    const projects = await Project.find({ slug: { $regex: regex }, }).populate("heading").populate("movements");
+    const projects = await Project.find({ slug: { $regex: regex }, }).populate("heading").populate("movements").populate("applications")
     return res.json(projects);
   }
   if (req.query.public === "true") {
-    const projects = await Project.find({ public: true }).populate("heading").populate("movements");
+    const projects = await Project.find({ public: true }).populate("heading").populate("movements").populate("applications");
     return res.json(projects);
   } else {
-    const projects = await Project.find().populate("heading").populate("movements");
+    const projects = await Project.find().populate("heading").populate("movements").populate("applications");
     return res.json(projects);
   }
 
@@ -147,16 +147,20 @@ async function destroy(req, res) {
 
 // Project access the specified resource from storage.
 async function application(req, res) {
+  const project = await Project.findById(req.params.id)
   if (req.body.pre_status) {
+    const application = await Application.findOneAndRemove({ project, user: req.body.user })
     await Project.findByIdAndUpdate(req.params.id,
       {
-        $pull: { applications: { user: req.auth.id } }
+        $pull: { applications: application._id }
       })
     res.status(200)
   } else {
+    const application = new Application({ project, user: req.auth.id, status: false })
+    await application.save()
     await Project.findByIdAndUpdate(req.params.id,
       {
-        $push: { applications: { user: req.auth.id, status: false } }
+        $push: { applications: application._id }
       })
     res.status(200)
   }

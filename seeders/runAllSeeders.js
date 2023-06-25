@@ -9,6 +9,7 @@ async function runAllSeeders() {
   await mongoose.connection.dropCollection("users");
   await mongoose.connection.dropCollection("headings");
   await mongoose.connection.dropCollection("projects");
+  await mongoose.connection.dropCollection("applications");
   await mongoose.connection.dropCollection("roleprojects");
   await mongoose.connection.dropCollection("categories");
   await mongoose.connection.dropCollection("subcategories");

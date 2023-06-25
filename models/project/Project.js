@@ -34,12 +34,14 @@ const projectSchema = new Schema(
       type: String,
     },
     applications: [{
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-      },
-      status: { type: Boolean }
+      type: Schema.Types.ObjectId,
+      ref: "Application",
     }],
+    notifications: [{
+      type: Schema.Types.ObjectId,
+      ref: "Notification",
+    },
+    ],
     roles: [
       {
         type: Schema.Types.ObjectId,

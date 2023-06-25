@@ -18,6 +18,8 @@ const Bill = require("./payment/Bill");
 
 // project 
 const Project = require("./project/Project");
+const Application = require("./project/Application");
+const Notification = require("./project/Notification");
 const Heading = require("./project/Heading");
 const RoleProject = require("./project/RoleProject");
 
@@ -45,6 +47,8 @@ module.exports = {
   Bill,
 
   Project,
+  Application,
+  Notification,
   Heading,
   RoleProject,
 

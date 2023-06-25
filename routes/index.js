@@ -16,6 +16,7 @@ const statusRoutes = require("./payment/statusRoutes");
 
 // project
 const headingRoutes = require("./project/headingRoutes");
+const applicationRoutes = require("./project/applicationRoutes");
 const projectRoutes = require("./project/projectRoutes");
 const roleProjectRoutes = require("./project/roleProjectRoutes");
 
@@ -41,6 +42,7 @@ module.exports = (app) => {
   app.use("/order", orderRoutes);
 
   app.use("/heading", headingRoutes);
+  app.use("/application", applicationRoutes);
   app.use("/project", projectRoutes);
   app.use("/roleProject", roleProjectRoutes);
 
