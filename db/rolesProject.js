@@ -16,12 +16,28 @@ const defaultRolesProject = [
         members: ["iviza"]
     },
     {
+        name: "Miembro",
+        slug: "miembro",
+        description: "Miembro del Proyecto.",
+        level: 100,
+        project: "atic",
+        members: []
+    },
+    {
         name: "Administrador",
         slug: "administrador",
         description: "Admininistración del Proyecto.",
         level: 500,
         project: "cuartoexpreso",
         members: ["magguer"]
+    },
+    {
+        name: "Miembro",
+        slug: "miembro",
+        description: "Miembro del Proyecto.",
+        level: 100,
+        project: "cuartoexpreso",
+        members: []
     },
     {
         name: "Administrador",
@@ -32,6 +48,14 @@ const defaultRolesProject = [
         members: ["magguer"]
     },
     {
+        name: "Miembro",
+        slug: "miembro",
+        description: "Miembro del Proyecto.",
+        level: 100,
+        project: "noboss",
+        members: []
+    },
+    {
         name: "Administrador",
         slug: "administrador",
         description: "Admininistración del Proyecto.",
@@ -40,13 +64,29 @@ const defaultRolesProject = [
         members: ["magguer", "iviza"]
     },
     {
+        name: "Miembro",
+        slug: "miembro",
+        description: "Miembro del Proyecto.",
+        level: 100,
+        project: "tero_ventas",
+        members: []
+    },
+    {
         name: "Administrador",
         slug: "administrador",
         description: "Admininistración del Proyecto.",
         level: 500,
         project: "noheliaiguines_personaltrainer",
         members: ["noheiguines"]
-    }
+    },
+    {
+        name: "Miembro",
+        slug: "miembro",
+        description: "Miembro del Proyecto.",
+        level: 100,
+        project: "noheliaiguines_personaltrainer",
+        members: []
+    },
 ]
 
 module.exports = defaultRolesProject
