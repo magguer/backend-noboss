@@ -3,7 +3,6 @@ const defaultProjects = [
   {
     name: "Atic",
     slug: "atic",
-    password: "1234",
     members: ["magguer", "iviza"],
     roles: [],
     heading: "ropa-accesorios",
@@ -40,7 +39,6 @@ const defaultProjects = [
   {
     name: "CuartoExpreso",
     slug: "cuartoexpreso",
-    password: "1234",
     members: ["magguer"],
     roles: [],
     heading: "produccion-musical",
@@ -77,7 +75,6 @@ const defaultProjects = [
   {
     name: "Noboss",
     slug: "noboss",
-    password: "1234",
     members: ["magguer"],
     roles: [],
     heading: "desarrollo-web-app",
@@ -112,7 +109,6 @@ const defaultProjects = [
   {
     name: "Tero Ventas",
     slug: "tero_ventas",
-    password: "1234",
     members: ["magguer", "iviza"],
     roles: [],
     heading: "venta-variedad",
@@ -149,7 +145,6 @@ const defaultProjects = [
   {
     name: "Nohelia Iguines - Personal Triner",
     slug: "noheliaiguines_personaltrainer",
-    password: "1234",
     members: ["noheiguines"],
     roles: [],
     heading: "gym-personal-training",

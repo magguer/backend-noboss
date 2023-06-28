@@ -1,6 +1,5 @@
 const { faker } = require("@faker-js/faker");
 const { Project, Heading } = require("../../models/index");
-const bcrypt = require("bcryptjs");
 const defaultProjects = require("../../db/projects");
 
 faker.locale = "es";
@@ -13,7 +12,6 @@ module.exports = async () => {
     const project = new Project({
       name: projectData.name,
       slug: projectData.slug,
-      password: await bcrypt.hash(projectData.password, 8),
       members: [],
       roles: projectData.roles,
       heading: heading,

@@ -7,9 +7,6 @@ const projectSchema = new Schema(
       type: String,
       required: true,
     },
-    password: {
-      type: String,
-    },
     members: [
       {
         role: {
@@ -171,21 +168,7 @@ const projectSchema = new Schema(
   { timestamps: true }
 );
 
-/* // No Password in JWT
-projectSchema.methods.toJSON = function () {
-  const project = this.toObject();
-  project.id = project._id.toString();
-  delete project.password;
-  return project;
-}; */
 
-// Bcrypt - Password
-projectSchema.pre("save", async function (next) {
-  if (this.isModified("password") || this.isNew) {
-    this.password = await bcrypt.hash(this.password, 8);
-    next();
-  }
-});
 
 const Project = mongoose.model("Project", projectSchema);
 module.exports = Project;

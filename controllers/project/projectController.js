@@ -12,7 +12,6 @@ const supabase = createClient(
 
 // Display a listing of projects.
 async function index(req, res) {
-
   if (req.query.search) {
     const regex = new RegExp(req.query.search, "i");
     const projects = await Project.find({ slug: { $regex: regex }, }).populate("heading").populate("movements").populate("applications")
@@ -65,21 +64,27 @@ async function store(req, res) {
         const user = await User.findById(req.auth.id)
         const heading = await Heading.findOne({ slug: fields.heading })
 
-        const role = new RoleProject({
+        const roleAdmin = new RoleProject({
           name: "Administrador",
           slug: "administrador",
           description: "Usuario administrador del Proyecto.",
           members: [req.auth.id]
         })
 
+        const roleMember = new RoleProject({
+          name: "Miembro",
+          slug: "miembro",
+          description: "Usuario miembro del Proyecto.",
+          members: []
+        })
+
         const project = new Project({
           name: fields.name,
-          password: fields.password,
-          members: [{ role, member: req.auth.id }],
+          members: [{ role: roleAdmin, member: req.auth.id }],
           heading: heading._id,
           color_one: fields.color_one || "#02997d",
           color_two: fields.color_two || "#c9c9c9",
-          roles: [role],
+          roles: [roleAdmin, roleMember],
           slug: slugify(fields.name).toLowerCase(),
           logo_url: newFileName,
           public: false,
@@ -95,9 +100,11 @@ async function store(req, res) {
 
         user.projects.push(project._id)
         heading.projects.push(project._id)
-        role.project = project._id
+        roleAdmin.project = project._id
+        roleMember.project = project._id
         await user.save()
-        await role.save()
+        await roleAdmin.save()
+        await roleMember.save()
         await heading.save()
 
         const newProject = await Project.findById(project.id).populate(["heading", "roles", "sub_categories", "categories", "movements", { path: "members", populate: ["role", "member"] }])
@@ -116,7 +123,6 @@ async function update(req, res) {
   const heading = await Heading.findById(req.body.heading)
   const project = await Project.findByIdAndUpdate(req.params.id, {
     name: req.body.name,
-    password: req.body.password,
     services_on: req.body.services,
     products_on: req.body.products,
     public: req.body.public_project,
