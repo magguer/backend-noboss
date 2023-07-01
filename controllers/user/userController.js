@@ -18,17 +18,13 @@ async function token(req, res) {
     let user
     if (req.body.username.includes("@")) {
       user = await User.findOne({ email: req.body.username }).populate({ path: "projects", populate: ["heading", "roles", "sub_categories", "categories", "movements", { path: "members", populate: ["role", "member"] }] }).populate("roles");
-
     } else {
       user = await User.findOne({ username: req.body.username }).populate({ path: "projects", populate: ["heading", "roles", "sub_categories", "categories", "movements", { path: "members", populate: ["role", "member"] }] }).populate("roles");
-
     }
-
     const matchPassword = await bcrypt.compare(
       req.body.password,
       user.password
     );
-
     if (matchPassword) {
       const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
       res.json({
@@ -60,8 +56,7 @@ async function index(req, res) {
 
 // Display the specified resource.
 async function show(req, res) {
-  const userId = req.params.id;
-  const user = await User.findById(userId).populate("orders");
+  const user = await User.findById(req.params.id).populate({ path: "projects", populate: ["heading", "roles", "sub_categories", "categories", "movements", { path: "members", populate: ["role", "member"] }] });
   res.json(user);
 }
 

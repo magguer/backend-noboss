@@ -151,7 +151,6 @@ async function destroy(req, res) {
   });
 }
 
-// Project access the specified resource from storage.
 async function application(req, res) {
   const project = await Project.findById(req.params.id)
   if (req.body.pre_status) {
@@ -172,6 +171,26 @@ async function application(req, res) {
   }
 }
 
+async function exit(req, res) {
+  const project = await Project.findById(req.params.id)
+  const user = await User.findById(req.params.user)
+  await Project.findByIdAndUpdate(req.params.id,
+    {
+      $pull: { members: { member: user._id } }
+    })
+  await User.findByIdAndUpdate(req.params.user,
+    {
+      $pull: { projects: project._id }
+    })
+  await RoleProject.findOneAndUpdate({ project: project, members: user },
+    {
+      $pull: { members: user._id }
+    })
+}
+
+
+
+
 
 module.exports = {
   index,
@@ -179,5 +198,6 @@ module.exports = {
   store,
   update,
   destroy,
-  application
+  application,
+  exit
 };

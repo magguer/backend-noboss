@@ -20,14 +20,14 @@ async function index(req, res) {
       slug: { $regex: regex },
     })
       .populate("sub_category")
-      .populate("category")
+      .populate({ path: "category", populate: "sub_categories" })
       .sort({ sales_quantity: 'desc' })
       .lean();
     return res.json(products);
   } else {
     const products = await Product.find({ project })
       .populate("sub_category")
-      .populate("category")
+      .populate({ path: "category", populate: "sub_categories" })
       .sort({ sales_quantity: 'desc' })
       .limit(req.query.best ? 5 : null)
       .lean();
@@ -37,8 +37,7 @@ async function index(req, res) {
 
 // Display the specified resource.
 async function show(req, res) {
-  const productSlug = req.params.slug;
-  const product = await Product.findOne({ slug: productSlug })
+  const product = await Product.findById(req.params.id)
     .populate("sub_category")
     .populate("category")
     .populate({ path: "project", populate: "products" });
@@ -98,7 +97,7 @@ async function store(req, res) {
         const sub_category = await Subcategory.findById(fields.sub_category
         );
 
-        const project = await Project.findOne({ slug: fields.project });
+        const project = await Project.findById(fields.project);
 
         const product = new Product({
           model: fields.model,
@@ -149,16 +148,13 @@ async function update(req, res) {
         error: err,
       });
     }
-    const sub_category = await Subcategory.findOne({
-      slug: fields.sub_category,
-    });
-    const category = await Category.findOne({ slug: fields.category });
+
+    const sub_category = await Subcategory.findById(fields.sub_category);
+    const category = await Category.findById(fields.category);
     const product = await Product.findById(fields.product);
 
-    console.log(fields.product);
-
-    await Subcategory.findOneAndUpdate(
-      { slug: fields.oldSub_category },
+    await Subcategory.findByIdAndUpdate(
+      fields.oldSub_category,
       { $pull: { products: product._id } }
     );
 

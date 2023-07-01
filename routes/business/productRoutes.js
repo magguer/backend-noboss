@@ -12,7 +12,7 @@ router.use(
 );
 
 router.get("/", productController.index);
-router.get("/:slug", productController.show);
+router.get("/:id", productController.show);
 router.post("/", productController.store);
 router.patch("/:id", productController.update);
 router.delete("/:id", productController.destroy);
