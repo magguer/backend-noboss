@@ -26,7 +26,7 @@ async function token(req, res) {
       user.password
     );
     if (matchPassword) {
-      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+      const token = jwt.sign({ id: user.id, roles: user.roles }, process.env.JWT_SECRET);
       res.json({
         id: user._id,
         email: user.email,

@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const projectPermissions = require("../../middlewares/projectPermissions")
 const { expressjwt: checkJwt } = require("express-jwt");
 const productController = require("../../controllers/business/productController");
 
@@ -11,6 +12,7 @@ router.use(
   })
 );
 
+router.use(projectPermissions)
 router.get("/", productController.index);
 router.get("/:id", productController.show);
 router.post("/", productController.store);

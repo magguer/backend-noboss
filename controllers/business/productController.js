@@ -22,6 +22,8 @@ async function index(req, res) {
       .populate("sub_category")
       .populate({ path: "category", populate: "sub_categories" })
       .sort({ sales_quantity: 'desc' })
+      .skip(req.query.offset)
+      .limit(10)
       .lean();
     return res.json(products);
   } else {
@@ -29,9 +31,10 @@ async function index(req, res) {
       .populate("sub_category")
       .populate({ path: "category", populate: "sub_categories" })
       .sort({ sales_quantity: 'desc' })
-      .limit(req.query.best ? 5 : null)
+      .skip(req.query.offset)
+      .limit(req.query.best ? 5 : 10)
       .lean();
-    res.json(products);
+    return res.json(products);
   }
 }
 

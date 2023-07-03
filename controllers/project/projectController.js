@@ -10,6 +10,31 @@ const supabase = createClient(
   process.env.SUPABASE_KEY
 );
 
+const matriz = (status) => {
+  return {
+    editProject: status,
+    removeProject: status,
+    addRoleProject: status,
+    editRoleProject: status,
+    removeRoleProject: status,
+    editMemberProject: status,
+    kickMemberProject: status,
+    addCategory: status,
+    editCategory: status,
+    removeCategory: status,
+    addProduct: status,
+    editProduct: status,
+    removeProduct: status,
+    addClient: status,
+    editClient: status,
+    removeClient: status,
+    addService: status,
+    editService: status,
+    removeService: status
+  }
+}
+
+
 // Display a listing of projects.
 async function index(req, res) {
   if (req.query.search) {
@@ -68,6 +93,7 @@ async function store(req, res) {
           name: "Administrador",
           slug: "administrador",
           description: "Usuario administrador del Proyecto.",
+          matriz: matriz(true),
           members: [req.auth.id]
         })
 
@@ -75,6 +101,7 @@ async function store(req, res) {
           name: "Miembro",
           slug: "miembro",
           description: "Usuario miembro del Proyecto.",
+          matriz: matriz(false),
           members: []
         })
 
@@ -174,13 +201,15 @@ async function application(req, res) {
 async function exit(req, res) {
   const project = await Project.findById(req.params.id)
   const user = await User.findById(req.params.user)
+  const role = await RoleProject.findOne({ project: project, members: user })
+
   await Project.findByIdAndUpdate(req.params.id,
     {
       $pull: { members: { member: user._id } }
     })
   await User.findByIdAndUpdate(req.params.user,
     {
-      $pull: { projects: project._id }
+      $pull: { projects: project._id, roles: role._id }
     })
   await RoleProject.findOneAndUpdate({ project: project, members: user },
     {

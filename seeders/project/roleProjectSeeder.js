@@ -10,7 +10,7 @@ module.exports = async () => {
         console.log(defaultRolesProject); */
 
     for (let rolesProjectData of defaultRolesProject) {
-        const { name, slug, description, level } = rolesProjectData
+        const { name, slug, description, matriz } = rolesProjectData
         const project = await Project.findOne({ slug: rolesProjectData.project })
         const members = []
 
@@ -23,7 +23,7 @@ module.exports = async () => {
             name,
             description,
             slug,
-            level,
+            matriz,
             project,
             members
         })

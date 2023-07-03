@@ -1,9 +1,35 @@
+const matriz = (status) => {
+    return {
+        editProject: status,
+        removeProject: status,
+        addRoleProject: status,
+        editRoleProject: status,
+        removeRoleProject: status,
+        acceptMemberProject: status,
+        editMemberProject: status,
+        kickMemberProject: status,
+        addCategory: status,
+        editCategory: status,
+        removeCategory: status,
+        addProduct: status,
+        editProduct: status,
+        removeProduct: status,
+        addClient: status,
+        editClient: status,
+        removeClient: status,
+        addService: status,
+        editService: status,
+        removeService: status
+    }
+}
+
+
 const defaultRolesProject = [
     {
         name: "Administrador",
         slug: "administrador",
         description: "Admininistración del Proyecto.",
-        level: 500,
+        matriz: matriz(true),
         project: "atic",
         members: ["magguer"]
     },
@@ -11,7 +37,7 @@ const defaultRolesProject = [
         name: "CEO",
         slug: "ceo",
         description: "CEO del Proyecto.",
-        level: 500,
+        matriz: matriz(true),
         project: "atic",
         members: ["iviza"]
     },
@@ -19,7 +45,7 @@ const defaultRolesProject = [
         name: "Miembro",
         slug: "miembro",
         description: "Miembro del Proyecto.",
-        level: 100,
+        matriz: matriz(false),
         project: "atic",
         members: []
     },
@@ -27,7 +53,7 @@ const defaultRolesProject = [
         name: "Administrador",
         slug: "administrador",
         description: "Admininistración del Proyecto.",
-        level: 500,
+        matriz: matriz(true),
         project: "cuartoexpreso",
         members: ["magguer"]
     },
@@ -35,7 +61,7 @@ const defaultRolesProject = [
         name: "Miembro",
         slug: "miembro",
         description: "Miembro del Proyecto.",
-        level: 100,
+        matriz: matriz(false),
         project: "cuartoexpreso",
         members: []
     },
@@ -43,7 +69,7 @@ const defaultRolesProject = [
         name: "Administrador",
         slug: "administrador",
         description: "Admininistración del Proyecto.",
-        level: 500,
+        matriz: matriz(true),
         project: "noboss",
         members: ["magguer"]
     },
@@ -51,7 +77,7 @@ const defaultRolesProject = [
         name: "Miembro",
         slug: "miembro",
         description: "Miembro del Proyecto.",
-        level: 100,
+        matriz: matriz(false),
         project: "noboss",
         members: []
     },
@@ -59,7 +85,7 @@ const defaultRolesProject = [
         name: "Administrador",
         slug: "administrador",
         description: "Admininistración del Proyecto.",
-        level: 500,
+        matriz: matriz(true),
         project: "tero_ventas",
         members: ["magguer", "iviza"]
     },
@@ -67,7 +93,7 @@ const defaultRolesProject = [
         name: "Miembro",
         slug: "miembro",
         description: "Miembro del Proyecto.",
-        level: 100,
+        matriz: matriz(false),
         project: "tero_ventas",
         members: []
     },
@@ -75,7 +101,7 @@ const defaultRolesProject = [
         name: "Administrador",
         slug: "administrador",
         description: "Admininistración del Proyecto.",
-        level: 500,
+        matriz: matriz(true),
         project: "noheliaiguines_personaltrainer",
         members: ["noheiguines"]
     },
@@ -83,7 +109,7 @@ const defaultRolesProject = [
         name: "Miembro",
         slug: "miembro",
         description: "Miembro del Proyecto.",
-        level: 100,
+        matriz: matriz(false),
         project: "noheliaiguines_personaltrainer",
         members: []
     },
