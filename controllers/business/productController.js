@@ -21,18 +21,18 @@ async function index(req, res) {
     })
       .populate("sub_category")
       .populate({ path: "category", populate: "sub_categories" })
-      .sort({ sales_quantity: 'desc' })
+      .sort({ sales_quantity: "desc" })
       .skip(req.query.offset)
-      .limit(10)
+      .limit(20)
       .lean();
     return res.json(products);
   } else {
     const products = await Product.find({ project })
       .populate("sub_category")
       .populate({ path: "category", populate: "sub_categories" })
-      .sort({ sales_quantity: 'desc' })
+      .sort({ sales_quantity: "desc" })
       .skip(req.query.offset)
-      .limit(req.query.best ? 5 : 10)
+      .limit(req.query.best ? 5 : 20)
       .lean();
     return res.json(products);
   }
@@ -93,12 +93,9 @@ async function store(req, res) {
           arrImages.push(newFileName);
         }
 
-        const category = await Category.findById(
-          fields.category,
-        );
+        const category = await Category.findById(fields.category);
 
-        const sub_category = await Subcategory.findById(fields.sub_category
-        );
+        const sub_category = await Subcategory.findById(fields.sub_category);
 
         const project = await Project.findById(fields.project);
 
@@ -156,10 +153,9 @@ async function update(req, res) {
     const category = await Category.findById(fields.category);
     const product = await Product.findById(fields.product);
 
-    await Subcategory.findByIdAndUpdate(
-      fields.oldSub_category,
-      { $pull: { products: product._id } }
-    );
+    await Subcategory.findByIdAndUpdate(fields.oldSub_category, {
+      $pull: { products: product._id },
+    });
 
     if (files.images) {
       let arrImages = [];
