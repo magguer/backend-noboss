@@ -7,14 +7,20 @@ async function runAllSeeders() {
   await mongoose.connection.dropCollection("roleadmins");
   await mongoose.connection.dropCollection("admins");
   await mongoose.connection.dropCollection("users");
+
   await mongoose.connection.dropCollection("headings");
   await mongoose.connection.dropCollection("projects");
   await mongoose.connection.dropCollection("applications");
   await mongoose.connection.dropCollection("roleprojects");
+
   await mongoose.connection.dropCollection("categories");
   await mongoose.connection.dropCollection("subcategories");
   await mongoose.connection.dropCollection("products");
   await mongoose.connection.dropCollection("clients");
+  await mongoose.connection.dropCollection("bookings");
+  await mongoose.connection.dropCollection("bookingstatuses");
+  await mongoose.connection.dropCollection("orderstatuses");
+
 
   await require("./user/addressSeeder")();
   await require("./user/roleAdminSeeder")();
@@ -23,6 +29,7 @@ async function runAllSeeders() {
 
   await require("./project/headingSeeder")();
   await require("./project/projectSeeder")();
+
   await require("./project/roleProjectSeeder")();
 
   await require("./business/categorySeeder")();
