@@ -25,16 +25,16 @@ async function index(req, res) {
       .skip(req.query.offset)
       .limit(20)
       .lean();
-    return res.json(products);
+    return res.json(products).status(200);
   } else {
     const products = await Product.find({ project })
       .populate("sub_category")
       .populate({ path: "category", populate: "sub_categories" })
-      .sort({ sales_quantity: "desc" })
+      .sort(req.query.best ? { sales_quantity: "desc" } : { createdAt: "desc" })
       .skip(req.query.offset)
       .limit(req.query.best ? 5 : 20)
       .lean();
-    return res.json(products);
+    return res.json(products).status(200);
   }
 }
 
