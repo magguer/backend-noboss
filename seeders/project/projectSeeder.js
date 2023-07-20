@@ -10,6 +10,7 @@ module.exports = async () => {
   for (let projectData of defaultProjects) {
     const heading = await Heading.findOne({ slug: projectData.heading });
     const project = new Project({
+      _id: projectData._id,
       name: projectData.name,
       slug: projectData.slug,
       members: [],

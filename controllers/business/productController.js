@@ -70,7 +70,7 @@ async function store(req, res) {
             const ext = path.extname(image.filepath);
             const newFileName = `image_${Date.now()}${ext}`;
             const { data, error } = await supabase.storage
-              .from("imgs/projects/products")
+              .from(`imgs/projects/${fields.project}/products`)
               .upload(newFileName, fs.createReadStream(image.filepath), {
                 cacheControl: "3600",
                 upsert: false,
@@ -83,7 +83,7 @@ async function store(req, res) {
           const ext = path.extname(files.images.filepath);
           const newFileName = `image_${Date.now()}${ext}`;
           const { data, error } = await supabase.storage
-            .from("imgs/projects/products")
+            .from(`imgs/projects/${fields.project}/products`)
             .upload(newFileName, fs.createReadStream(files.images.filepath), {
               cacheControl: "3600",
               upsert: false,
@@ -164,7 +164,7 @@ async function update(req, res) {
           const ext = path.extname(image.filepath);
           const newFileName = `image_${Date.now()}${ext}`;
           const { data, error } = await supabase.storage
-            .from("imgs/projects/products")
+            .from(`imgs/projects/${fields.project}/products`)
             .upload(newFileName, fs.createReadStream(image.filepath), {
               cacheControl: "3600",
               upsert: false,
@@ -177,7 +177,7 @@ async function update(req, res) {
         const ext = path.extname(files.images.filepath);
         const newFileName = `image_${Date.now()}${ext}`;
         const { data, error } = await supabase.storage
-          .from("imgs/projects/products")
+          .from(`imgs/projects/${fields.project}/products`)
           .upload(newFileName, fs.createReadStream(files.images.filepath), {
             cacheControl: "3600",
             upsert: false,
@@ -240,9 +240,16 @@ async function update(req, res) {
 
 // Remove the specified resource from storage.
 async function destroy(req, res) {
-  const productId = req.params.id;
-  const product = await Product.findOneAndDelete({ id: productId });
-  res.json({ message: "The Product was deleted", productDeleted: product });
+  const product = await Product.findByIdAndDelete(req.params.id)
+  await Subcategory.findByIdAndUpdate(product.sub_category, {
+    $pull: { products: req.params.id }
+  })
+  for (let image of product.images_url) {
+    await supabase.storage
+      .from("imgs")
+      .remove([`projects/${req.query.project}/products/${image}`])
+  }
+  return res.json({ message: "The Product was deleted", productDeleted: product })
 }
 
 module.exports = {

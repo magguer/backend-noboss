@@ -16,6 +16,7 @@ async function runAllSeeders() {
   await mongoose.connection.dropCollection("categories");
   await mongoose.connection.dropCollection("subcategories");
   await mongoose.connection.dropCollection("products");
+  await mongoose.connection.dropCollection("services");
   await mongoose.connection.dropCollection("clients");
   await mongoose.connection.dropCollection("bookings");
   await mongoose.connection.dropCollection("bookingstatuses");

@@ -1,5 +1,5 @@
 const { default: slugify } = require("slugify");
-const { Project, RoleProject, Heading, User, Application } = require("../../models");
+const { Project, RoleProject, Heading, User, Application, Product, Category, Subcategory, Service } = require("../../models");
 const { createClient } = require("@supabase/supabase-js");
 const formidable = require("formidable");
 const fs = require("fs");
@@ -77,15 +77,6 @@ async function store(req, res) {
       if (files.logo_url) {
         const ext = path.extname(files.logo_url.filepath);
         const newFileName = `image_${Date.now()}${ext}`;
-        const { data, error } = await supabase.storage
-          .from("imgs/projects/logos")
-          .upload(newFileName, fs.createReadStream(files.logo_url.filepath), {
-            cacheControl: "3600",
-            upsert: false,
-            contentType: files.logo_url.mimetype,
-            duplex: "half",
-          });
-
         const user = await User.findById(req.auth.id)
         const heading = await Heading.findOne({ slug: fields.heading })
 
@@ -123,7 +114,18 @@ async function store(req, res) {
           spent_money: 0,
           banned: false
         });
+
         await project.save();
+
+        // Upload Logo in Supabase 
+        await supabase.storage
+          .from(`imgs/projects/${project._id}/logo`)
+          .upload(newFileName, fs.createReadStream(files.logo_url.filepath), {
+            cacheControl: "3600",
+            upsert: false,
+            contentType: files.logo_url.mimetype,
+            duplex: "half",
+          });
 
         user.projects.push(project._id)
         heading.projects.push(project._id)
@@ -170,12 +172,54 @@ async function update(req, res) {
 
 // Remove the specified resource from storage.
 async function destroy(req, res) {
-  const projectId = req.params.id;
-  const deletedProject = await Project.findById(projectId);
-  await Project.findOneAndDelete({ id: projectId });
+
+  const products = await Product.find({ project: req.params.id })
+  const services = await Service.find({ project: req.params.id })
+  const project = await Project.findById(req.params.id)
+
+  await Product.deleteMany({ project: req.params.id });
+  await Service.deleteMany({ project: req.params.id });
+  await Subcategory.deleteMany({ project: req.params.id });
+  await Category.deleteMany({ project: req.params.id });
+  await Project.findByIdAndDelete(req.params.id);
+
+  if (products) {
+    for (let product of products) {
+      for (let image of product.images_url) {
+        console.log(image);
+        await supabase.storage
+          .from("imgs")
+          .remove(`projects/${req.params.id}/products/${image}`)
+      }
+    }
+  }
+
+  if (services) {
+    for (let service of services) {
+      for (let image of service.images_url) {
+        await supabase.storage
+          .from("imgs")
+          .remove(`projects/${req.params.id}/services/${image}`)
+      }
+    }
+  }
+
+  await supabase.storage
+    .from("imgs")
+    .remove(`projects/${req.params.id}/logo/${project.logo_url}`)
+
+  await supabase.storage
+    .from("imgs")
+    .remove(`projects/${req.params.id}/banner/${project.banner_url}`)
+
+  await supabase.storage
+    .from("imgs")
+    .remove(`projects/${req.params.id}`)
+
   res.json({
-    message: `The Admin ${deletedProject.name} was deleted`,
-  });
+    message: `Proyecto elminador correctamente.`,
+  }).status(200);
+
 }
 
 async function application(req, res) {
@@ -202,7 +246,6 @@ async function exit(req, res) {
   const project = await Project.findById(req.params.id)
   const user = await User.findById(req.params.user)
   const role = await RoleProject.findOne({ project: project, members: user })
-
   await Project.findByIdAndUpdate(req.params.id,
     {
       $pull: { members: { member: user._id } }

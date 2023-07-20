@@ -20,5 +20,4 @@ router.patch("/:id", productController.update);
 router.delete("/:id", productController.destroy);
 
 
-
 module.exports = router;

@@ -1,6 +1,9 @@
+const { mongoose } = require("../db");
+
 const defaultProjects = [
   /*     Atic */
   {
+    _id: mongoose.Types.ObjectId("64b952b548dc5ed726cad770"),
     name: "Atic",
     slug: "atic",
     members: ["magguer", "iviza"],
@@ -37,6 +40,7 @@ const defaultProjects = [
   },
   /*     CuartoExpreso */
   {
+    _id: mongoose.Types.ObjectId("64b952b548dc5ed726cad771"),
     name: "CuartoExpreso",
     slug: "cuartoexpreso",
     members: ["magguer"],
@@ -73,6 +77,7 @@ const defaultProjects = [
   },
   /*     Noboss */
   {
+    _id: mongoose.Types.ObjectId("64b952b548dc5ed726cad772"),
     name: "Noboss",
     slug: "noboss",
     members: ["magguer"],
@@ -107,6 +112,7 @@ const defaultProjects = [
   },
   /*     TeroVentas */
   {
+    _id: mongoose.Types.ObjectId("64b952b548dc5ed726cad773"),
     name: "Tero Ventas",
     slug: "tero_ventas",
     members: ["magguer", "iviza"],
@@ -143,6 +149,7 @@ const defaultProjects = [
   },
   /*     Nohelia Iguines Personal Trainer */
   {
+    _id: mongoose.Types.ObjectId("64b952b548dc5ed726cad774"),
     name: "Nohelia Iguines - Personal Triner",
     slug: "noheliaiguines_personaltrainer",
     members: ["noheiguines"],
